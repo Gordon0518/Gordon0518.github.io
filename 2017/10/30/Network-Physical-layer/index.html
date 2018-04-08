@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Network," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="网络协议最底层是物理层(Physical layer)，该层关注的是单个比特在物理信道上的传输。传输信道分为三类：有线(铜线和光纤)、无线(wireless)和卫星(satellite)。传输信号在信道上真正传输并不是数字比特0和1，而是通过电压变化、有无光照、电磁波频率跳动等来模拟信号，而数字调至解调技术就是主要解决如何把模拟信号转化成数字比特以及将数字比特还原成模拟信号。">
+<meta name="keywords" content="Network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Network-Physical layer">
+<meta property="og:url" content="http://yoursite.com/2017/10/30/Network-Physical-layer/index.html">
+<meta property="og:site_name" content="Gordong">
+<meta property="og:description" content="网络协议最底层是物理层(Physical layer)，该层关注的是单个比特在物理信道上的传输。传输信道分为三类：有线(铜线和光纤)、无线(wireless)和卫星(satellite)。传输信号在信道上真正传输并不是数字比特0和1，而是通过电压变化、有无光照、电磁波频率跳动等来模拟信号，而数字调至解调技术就是主要解决如何把模拟信号转化成数字比特以及将数字比特还原成模拟信号。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2017/10/30/Network-Physical-layer/fourier.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/10/30/Network-Physical-layer/modulation.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/10/30/Network-Physical-layer/manchester.jpg">
+<meta property="og:updated_time" content="2017-11-14T08:26:17.046Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Network-Physical layer">
+<meta name="twitter:description" content="网络协议最底层是物理层(Physical layer)，该层关注的是单个比特在物理信道上的传输。传输信道分为三类：有线(铜线和光纤)、无线(wireless)和卫星(satellite)。传输信号在信道上真正传输并不是数字比特0和1，而是通过电压变化、有无光照、电磁波频率跳动等来模拟信号，而数字调至解调技术就是主要解决如何把模拟信号转化成数字比特以及将数字比特还原成模拟信号。">
+<meta name="twitter:image" content="http://yoursite.com/2017/10/30/Network-Physical-layer/fourier.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/30/Network-Physical-layer/"/>
+
+
+
+
+
+  <title>Network-Physical layer | Gordong</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?95ac7d2cf2ac052e787d934c29dac40e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gordong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">GuoDongDong's Personal Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/30/Network-Physical-layer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郭冬冬">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gordong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Network-Physical layer</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-30T08:52:22+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Network/" itemprop="url" rel="index">
+                    <span itemprop="name">Network</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/30/Network-Physical-layer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/30/Network-Physical-layer/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/10/30/Network-Physical-layer/" class="leancloud_visitors" data-flag-title="Network-Physical layer">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>网络协议最底层是物理层(Physical layer)，该层关注的是单个比特在物理信道上的传输。传输信道分为三类：有线(铜线和光纤)、无线(wireless)和卫星(satellite)。传输信号在信道上真正传输并不是数字比特0和1，而是通过电压变化、有无光照、电磁波频率跳动等来模拟信号，而数字调至解调技术就是主要解决如何把模拟信号转化成数字比特以及将数字比特还原成模拟信号。<br><a id="more"></a></p>
+<h2 id="数据通信的理论基础"><a href="#数据通信的理论基础" class="headerlink" title="数据通信的理论基础"></a>数据通信的理论基础</h2><p>改变诸如电压或电流等某种物理特性的方法可用来在电线上传输信息。如果用一个以时间t为自变量的单值函数f(t)来表示电压或电流的值，就可以对信号行为进行建模，并用数学手段进行分析。</p>
+<h3 id="傅里叶分析"><a href="#傅里叶分析" class="headerlink" title="傅里叶分析"></a>傅里叶分析</h3><p>任何一个行为合理周期为T的周期g(t)，都可以表示成用正弦函数和余弦函数组成的无穷级数：</p>
+<blockquote>
+<p><img src="fourier.jpg" alt="傅里叶分析"></p>
+</blockquote>
+<p><a href="http://blog.jobbole.com/70549/" target="_blank" rel="noopener">jobbole</a><br><a href="https://www.zhihu.com/question/19714540" target="_blank" rel="noopener">知乎</a></p>
+<p>简单理解为：傅里叶变换, 就是在用一种特殊的正交基(正交函数)在对原函数做线性变换。无穷个正弦波叠加，最终会叠加成一个标准的矩形，有一个n维向量a, 我们总可以找到一组n维正交基e1 e2 e3…en等分量, 使得<br>a = c1 e1 + c2 e2 + c3 e3 + ……………………cn en。<br>这样就可以通过频率的叠加来表示矩形，从而矩形的上下分别表示比特里的1和0，重复的矩形来表示时钟。</p>
+<p>傅里叶分析与数据通信的关联在于实际信道对不同频率信号有不同的影响。所有的传输设施在传输过程中都要损失一些能量，如果所有的频率分量都等量衰减，则结果信号将会在振幅上有所减少，但不会变形，模拟信号还是可以准确的转化为数字比特。但是所有的传输设施对于不同分量的衰减程度并不相同，从而导致接收端接受到的结果信号发生变形，这样在转化为数字比特时0被认为是1，1被认为是0，这是不能容忍的。一般情况下对导线而言，在0到某个频率f HZ的这段范围内，振幅在传输过程中变化衰减，而在频率f HZ只上的所有频率振幅都将有不同程度的减弱，0-f HZ这段在传输过程中振幅变化明显减弱的频率(HZ,为了纪念赫兹)宽度就称为带宽(bandwidth)。实际上，截止频率并没有那么尖锐，首页通常引用的带宽是指从0到使得接收能量保留一半的那个频率位置。</p>
+<h3 id="信道的最大数据速率"><a href="#信道的最大数据速率" class="headerlink" title="信道的最大数据速率"></a>信道的最大数据速率</h3><p>由于系统中分子的运动，随机热噪声总是存在的信号功率S与噪声功率N的比值称为信噪比S/N。香农理论：对于一条带宽为B HZ、噪声比是S/N的有噪声信道：</p>
+<blockquote>
+<p>最大比特率=B log2 (1+S/N)</p>
+</blockquote>
+<p>也就是说信道的传输能力是有限的。例如：在普通电话线上提供访问Internet的ADSL使用了大约1MHZ的带宽，线路上信噪比的程度取决于住宅和电话交换局之间的距离，对于1~2千米的短距离来说40分贝的信噪比算是很好的状况了。正是因为电话线具有这样的特性，因此无论采用多少个信号等级，也不管采样频率多快或多慢，永远也不可能在该信道上获得高于13Mbps(bit/s)的数据率。</p>
+<h2 id="传输介质"><a href="#传输介质" class="headerlink" title="传输介质"></a>传输介质</h2><p>物理层的作用是将比特从一台机器传输到另一台机器。每种传输介质都有独特的性质，体现在带宽、延迟、成本以及安装和维护难易程度上的不同。大致上可以将介质分为引导性介质(有线介质，比如铜线和光纤)和非引导性介质(无线介质，比如无线电、卫星和激光)两大类。</p>
+<h3 id="常用有线介质"><a href="#常用有线介质" class="headerlink" title="常用有线介质"></a>常用有线介质</h3><h4 id="双绞线-twisted-pair"><a href="#双绞线-twisted-pair" class="headerlink" title="双绞线(twisted pair)"></a>双绞线(twisted pair)</h4><p>一种最老但至今常用的传输介质是双绞线，由两根相互绝缘的铜线组成，铜线直径大约1mm。两根铜线以类似DNA分子链的螺旋状的形式紧紧绞合在一起，两根平行的先会构成一个很好的天线，不同电线产生的干扰会相互抵消，从而能显著降低电线的辐射。信号通常以两根电线的电压差来承载。<br>双绞线既可以用于传输模拟信号，也可以用于传输数字信号。最常用的应用是<strong>电话系统</strong>。打有线电话和ADSL接入Internet都发生在这些双绞线上。</p>
+<h4 id="光纤"><a href="#光纤" class="headerlink" title="光纤"></a>光纤</h4><p>光纤主要用于网络骨干的长途传输、高速局域网以及高速Internet接入，比如现在已经比较常见的<strong>光纤到户</strong>(FttH, Fiber to the Home)。光纤传输系统由三个关键部件构成：光源、传输介质和探测器。按照惯例，一个光脉冲表示比特1，没有光脉冲表示比特0，传输介质是超薄玻璃纤维。光探测器探测到光时产生一个电脉冲，光纤接受到电子信号时将其转换成光脉冲并传输出去，然后在另一端把光脉冲转换回电子信号输出给接收端。<br>原理：全反射，光由光密（即光在其中传播速度较小的）媒质射到光疏（即光在其中传播速度较大的）媒质的界面时，全部被反射回原媒质内的现象。当光由光密介质射向光疏介质时，折射角将大于入射角。当入射角增大到某一数值时，折射角将达到90°，这时在光疏介质中将不出现折射光线，只要入射角大于上述数值时，均不再存在折射现象，这就是全反射。所以产生全反射的条件是：①光必须由光密介质射向光疏介质．②入射角必须大于临界角。著名的实验是丁达尔做的光随水弯曲的实验。这种光源可以传播几千米而事实上没有损失。<br>分类：由于任何入射角度大于临界值的光束都会在内部反射，所以许多不同的光束以不同的角度来回反射着向前传播，每一束光都有不同的模式，这样的光纤称为多模光纤(multi-mode fiber)；然而，如果光纤的直径减少到只有几个光波波长大小的时候，则光波就如同一个波导，光只能按直线传播而不会反射，从而形成单模光纤(single-mode fiber)。单模光纤比较昂贵，广泛用于长距离传输，目前可用的单模光纤可以100 Gbps的速率传输数据到100 KM远而不用放大器。<br>通常用作信号源的有发光二极管(LED, Light Emitting Diodes)和半导体激光两种。光纤的接收端是一个光电二极管。当遇到光照时，光电二极管就发出一个电脉冲，其响应时间即把光脉冲转换成电脉冲所需要的时间，限制了数据传输率在100 Gbps左右。</p>
+<h4 id="光纤相比铜线的优点"><a href="#光纤相比铜线的优点" class="headerlink" title="光纤相比铜线的优点"></a>光纤相比铜线的优点</h4><ol>
+<li>光纤比铜线能够处理更高的带宽.</li>
+<li>光纤具有较低的衰减，所以在较长的线路上，大约每50 KM才需要一个中继器；铜线大约每5 KM就需要一个中继器.</li>
+<li>光纤不受电源浪涌、电磁干扰、电源故障、空气中腐蚀性化学物质侵蚀等影响.</li>
+<li>光纤细小且重量较轻.</li>
+<li>光纤不会漏光，不易被接入，这些特性使得光纤很难被搭线窃听，安全性高.</li>
+</ol>
+<h3 id="无线介质"><a href="#无线介质" class="headerlink" title="无线介质"></a>无线介质</h3><p>当电子运动时会产生电磁波，电磁波可在空中传播。当一个大小适中的天线被连接到一个电路上，电磁波就可以有效地被广播出去，在一定距离内的接受者能收到该电磁波。所有的无线通信都是基于这样的原理实现的。</p>
+<h4 id="无线电传输"><a href="#无线电传输" class="headerlink" title="无线电传输"></a>无线电传输</h4><p>无线电波的特性与频率有关。在低频部分，无线电波能够很好地穿透障碍物，但随着离信号源越来越远，其能量急剧下降，主要用于3G/4G移动电话网络；在高频部分，无线电倾向于以直线传播，遇到障碍物会反弹回来，也更容易被水和其他障碍物吸收，主要用于无线局域网：802.11-WiFi。</p>
+<h4 id="微波传输"><a href="#微波传输" class="headerlink" title="微波传输"></a>微波传输</h4><p>最初运营商大多使用低频段的无线来传输信号，随着时间的推移，使用的低频无线谱已经变得越来越拥挤。对于频段越来越多的需求驱使运营商们开始向高频发展，现在使用的频段已经扩展到了10 GHZ，但是到了4 GHZ，微波被水吸收了。这个现象造就现在我们常见的微波炉等产业的发展。</p>
+<h4 id="红外传输"><a href="#红外传输" class="headerlink" title="红外传输"></a>红外传输</h4><p>电视机、空调的遥控器都采用红外线通信，红外线传播具有方向性，并且不能穿透固体墙壁。</p>
+<h4 id="通信卫星和地球同步卫星等"><a href="#通信卫星和地球同步卫星等" class="headerlink" title="通信卫星和地球同步卫星等"></a>通信卫星和地球同步卫星等</h4><h2 id="数字调制"><a href="#数字调制" class="headerlink" title="数字调制"></a>数字调制</h2><p>模拟信号可表示成诸如连续变化的电压、光照强度或频率，数字比特用0和1来表示。为了发送数字信号，我们必须设法用模拟信号来表示比特。比特和代表它们的信号之间的转换过程称为数字调制(digital modulation)。<br>柱子调制的最直接形式是用正电压表示1，用负电压表示0。对于光线而言，可用光的存在表示1，没有光表示0。<br><img src="modulation.jpg" alt=""><br>但是有个问题是：接收器必须知道何时一个符号的结束和下一个符号的开始，尤其是遇到连续的0或1，才能对信号进行正确采样。比如15个0看起来很像16个0，经过一段时间后，接收器很难区分出各个比特，精确的时钟有助于解决这个问题，但在许多Mbps速率运行的链路上计时比特，因此时钟的漂移应该比最长允许运行的微妙零头还要小，这样的时钟漂移对慢速链路或短消息可能是合理的，但它显然不是一个通用的解决方案。<br>物理层上解决的第一个也是最重要的问题就是如何区分每一符号的开始和结束，也就是时钟恢复问题。</p>
+<h3 id="曼切斯特-Manchester-编码"><a href="#曼切斯特-Manchester-编码" class="headerlink" title="曼切斯特(Manchester)编码"></a>曼切斯特(Manchester)编码</h3><p><img src="manchester.jpg" alt=""><br>0和1交替重复的信号为时钟信号，时钟在每个比特时间内产生一次跳变，以两倍数据比特率的速度运行。方法是把数据信号(Data)和时钟信号(Clock)<strong>异或(NOR)</strong>混合在一起。当时钟和0电压异或时，会产生一次“从低到高”的信号跳变来表示逻辑0；当时钟和1电压异或时，会产生一次“从高到低”的相反跳变来表示逻辑1。曼切斯特编码主要用在<strong>经典以太网上</strong>。</p>
+<h3 id="不归零逆转-NRZI-Non-Return-to-Zero-Inverted"><a href="#不归零逆转-NRZI-Non-Return-to-Zero-Inverted" class="headerlink" title="不归零逆转(NRZI, Non-Return-to-Zero Inverted)"></a>不归零逆转(NRZI, Non-Return-to-Zero Inverted)</h3><p>曼切斯特编码的主要缺点是由于时钟信号在每个比特时间内会产生一次跳变，总体上就需要两倍于数据信号的带宽。而不归零逆转编码定义为：1定义为信号有跳变，反之0定义为信号无跳变。现在连接计算机外设的USB(Universal Serial Bus)标准就采用了该编码模式。<br>当然还需要解决一长串的0。解决这个问题的著名编码方式是4B/5B映射转换表。每4个比特被映射成一个5比特模式，使得映射结果永远不会出现连续三个0。</p>
+<h2 id="多路复用-multiplexing"><a href="#多路复用-multiplexing" class="headerlink" title="多路复用(multiplexing)"></a>多路复用(multiplexing)</h2><p>为了最大化利用资源，信道通常被多个信号共享。</p>
+<h3 id="频分复用-FDM-Frequency-Division-Multiplexing"><a href="#频分复用-FDM-Frequency-Division-Multiplexing" class="headerlink" title="频分复用(FDM, Frequency Division Multiplexing)"></a>频分复用(FDM, Frequency Division Multiplexing)</h3><p>将频谱分成几个频段，每个用户完全拥有其中的一个频段来发送自己的信号。相邻频段之间的频谱间隔足够大，称为保护带，用来防止干扰。而更有效的正交频分复用算法则不需要保护带，其信道带宽被分成许多独立发送数据的子载波，每个子载波的频率响应被设计成在相邻子载波的中心为零。正交频分复用已经被广泛用于WiFi-802.11和4G。</p>
+<h3 id="时分复用-TDM-Time-Division-Multiplexing"><a href="#时分复用-TDM-Time-Division-Multiplexing" class="headerlink" title="时分复用(TDM, Time Division Multiplexing)"></a>时分复用(TDM, Time Division Multiplexing)</h3><p>在这种方式下，每个用户获得固定的时间槽，以循环的方式轮流工作。其广泛用于电话蜂窝系统。</p>
+<h3 id="码分复用-CDM-Code-Dicision-Multiplexing"><a href="#码分复用-CDM-Code-Dicision-Multiplexing" class="headerlink" title="码分复用(CDM, Code Dicision Multiplexing)"></a>码分复用(CDM, Code Dicision Multiplexing)</h3><p>其算法是非常精妙的。主要用于某些蜂窝网络、卫星通信和有线电视。<br>场景分析：在一个机场候机大厅，许多人正在两两交谈。FDM相当于以不同语调交谈，有的人语调高，有的人语调低，所有的人可同时进行并相互独立；TDM可以以任何方式顺序交谈；CDM相当于每对交谈者以不同的语言进行交谈，不限制语调高低，用汉语交谈的人会接受其他使用汉语说话的信息，并且把所有没有用汉语交谈的内容都当做噪声过滤掉。<br>CDM的关键在于：能够提取出期望的信号，同时拒绝所有其他的信号，把这些信号当做噪声。<br>工作原理：每个比特时间被再细分成m个更短的时间间隔码片，通常情况下，每个比特被分成64或128个码片。每个站被分配得到唯一的m位码的码片序列，表示发送比特1，码片序列的反码表示发送比特0。所有的码片序列都是精心挑选出来的，它们两两相交，意味着任何两个不同的码片序列S和T的归一化内积S·T=0，利用Walsh码可以产生这样的正交码片序列。如果S·T=0，则(-S)·(-T)=0，S·S=1。(-S)表示S的反码，实际上的表示是S上面有一条横线，而不是左边。</p>
+<p>以8个码片为例：站A分配得到的码片序列是A=(-1-1-1+1+1-1+1+1)表示比特1，而发送(-A)=(+1+1+1-1-1+1-1-1)表示比特0。现在显示4个站的码片序列：<br>A=(-1-1-1+1+1-1+1+1)<br>B=(-1-1+1-1+1+1+1-1)<br>C=(-1+1-1+1+1+1-1-1)<br>D=(-1+1-1-1-1-1+1-1)<br>在一个信道内的6个传输实例：<br>S1=C         =(-1+1-1+1+1+1-1-1)<br>S2=B+(-C)    =(-2 0 0 0+2+2 0-2)<br>S3=A+(-B)    =( 0 0-2+2 0-2 0+2)<br>S4=A+(-B)+C  =(-1+1-3+3+1-1-1+1)<br>S5=A+B+C+D   =(-4 0-2 0+2 0+2-2)<br>S6=A+B+(-C)+D=(-2-2 0-2 0-2+4 0)<br>站C信号的恢复：<br>S1·C=[1+1-1+1+1+1-1-1]/8=1<br>S2·C=[2+0+0+0+2+2+0+2]/8=1<br>S3·C=[0+0+2+2+0-2+0-2]/8=0<br>S4·C=[1+1+3+3+1-1+1-1]/8=1<br>S5·C=[4+0+2+0+2+0-2+2]/8=1<br>S6·C=[2-2+0-2+0-2-4+0]/8=-1<br>为了恢复出某个特定站的比特流，接收方就必须预先知道这个站的码片序列。下面是数学分析：<br>在同一个信道内，站A传输比特1，站B传输比特0，站C传输比特1。接受方看到的和值S=A+(-B)+C，然后计算：<br>S·C=(A-B+C)·C=A·C-B·C+C·C=0+0+1=1<br>因为所有的码片序列两两相交，故站C和其他站的内积一定是0。</p>
+<p>原则上，给定足够的计算力，只要接收方并发地每个发送方运行相应的解码算法，就可以一次收听到所有发送方发出的信息。</p>
+<h2 id="交换-switch"><a href="#交换-switch" class="headerlink" title="交换(switch)"></a>交换(switch)</h2><h3 id="电路交换-circuit-switching"><a href="#电路交换-circuit-switching" class="headerlink" title="电路交换(circuit switching)"></a>电路交换(circuit switching)</h3><p>当你的计算机发出一个电话呼叫时，电话系统的交换设备会全力以赴寻找一条从你电话通向接收方电话的物理路径，称为电路交换。其特点是发送数据之前需要建立一条端到端的路径连接，一旦连接建立就预留了从发送方到接收端一路上的带宽资源，所有的数据将走相同的路径，让所有的数据遵循同样的路径意味着它们到达接收端的秩序不可能出现混乱，可以保证服务的质量。但如果双方建立连接，却没有流量通过这条电路，其带宽就会被浪费。我们打电话时就是使用的电路交换，接收方必须确认双方才能建立连接开始通话。</p>
+<h3 id="包交换-package-switching"><a href="#包交换-package-switching" class="headerlink" title="包交换(package switching)"></a>包交换(package switching)</h3><p>路由器使用存储-转发的包交换技术。在数据包交换中，数据包尽可能快的被发出，双方无需在传输数据前建立专门的连接路径，没有固定的路径，不同的数据包可以走不同的路径，路径的选择取决于它们被传输时的网络状况。<br>因为数据包交换中没有为传输数据预留带宽，在带宽已经被占满的情况下，可能不得不等待一段时间才能被转发出去，这样就引入了排队延迟(queuing delay)，如果许多包要在同一时间被发送出去还会引入堵塞。</p>
+<p>优缺点比较：</p>
+<ol>
+<li>在电路交换中拥塞发生在建立电路时，而在数据包交换中拥塞发生在转发数据包时。</li>
+<li>数据包交换不会浪费带宽，从整个系统角度看其效率更高，但对于单个用户来说服务质量会得不到保证。</li>
+<li>数据包交换比电路交换容错性更好。如果某个交换机出现故障，所有使用它的电路都会被终止，没有数据能从这些电路上发送出去，而数据包交换可以是包绕过死掉的那个交换机。</li>
+<li>电路交换按距离和时间收费；数据包交换按流量收费。</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>物理层做的事情就是如何把比特从发送方传输到接受方。主要的功能就是如何正确的区别每一个比特，以及通过调节载波的振幅、频率、相位把信号房在一个通带上和多路复用等手段来提高物理信道的资源利用率。而差错控制及流量控制的功能主要有其上层来实现。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="郭冬冬 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="郭冬冬 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Network/" rel="tag"># Network</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/24/活着的意义/" rel="next" title="活着的意义">
+                <i class="fa fa-chevron-left"></i> 活着的意义
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/15/网络协议-数据链路层-Data-Link-Layer/" rel="prev" title="网络协议-数据链路层(Data Link Layer)">
+                网络协议-数据链路层(Data Link Layer) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="郭冬冬" />
+            
+              <p class="site-author-name" itemprop="name">郭冬冬</p>
+              <p class="site-description motion-element" itemprop="description">技术总结和生活感想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/gordon0518" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guodongdong0518@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="gordon0518.github.io" target="_blank" title="Hexo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Hexo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.jianshu.com/u/0a500b9f1fe1" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据通信的理论基础"><span class="nav-number">1.</span> <span class="nav-text">数据通信的理论基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#傅里叶分析"><span class="nav-number">1.1.</span> <span class="nav-text">傅里叶分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信道的最大数据速率"><span class="nav-number">1.2.</span> <span class="nav-text">信道的最大数据速率</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传输介质"><span class="nav-number">2.</span> <span class="nav-text">传输介质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用有线介质"><span class="nav-number">2.1.</span> <span class="nav-text">常用有线介质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#双绞线-twisted-pair"><span class="nav-number">2.1.1.</span> <span class="nav-text">双绞线(twisted pair)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#光纤"><span class="nav-number">2.1.2.</span> <span class="nav-text">光纤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#光纤相比铜线的优点"><span class="nav-number">2.1.3.</span> <span class="nav-text">光纤相比铜线的优点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无线介质"><span class="nav-number">2.2.</span> <span class="nav-text">无线介质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#无线电传输"><span class="nav-number">2.2.1.</span> <span class="nav-text">无线电传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#微波传输"><span class="nav-number">2.2.2.</span> <span class="nav-text">微波传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#红外传输"><span class="nav-number">2.2.3.</span> <span class="nav-text">红外传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通信卫星和地球同步卫星等"><span class="nav-number">2.2.4.</span> <span class="nav-text">通信卫星和地球同步卫星等</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数字调制"><span class="nav-number">3.</span> <span class="nav-text">数字调制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#曼切斯特-Manchester-编码"><span class="nav-number">3.1.</span> <span class="nav-text">曼切斯特(Manchester)编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不归零逆转-NRZI-Non-Return-to-Zero-Inverted"><span class="nav-number">3.2.</span> <span class="nav-text">不归零逆转(NRZI, Non-Return-to-Zero Inverted)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多路复用-multiplexing"><span class="nav-number">4.</span> <span class="nav-text">多路复用(multiplexing)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#频分复用-FDM-Frequency-Division-Multiplexing"><span class="nav-number">4.1.</span> <span class="nav-text">频分复用(FDM, Frequency Division Multiplexing)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时分复用-TDM-Time-Division-Multiplexing"><span class="nav-number">4.2.</span> <span class="nav-text">时分复用(TDM, Time Division Multiplexing)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#码分复用-CDM-Code-Dicision-Multiplexing"><span class="nav-number">4.3.</span> <span class="nav-text">码分复用(CDM, Code Dicision Multiplexing)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交换-switch"><span class="nav-number">5.</span> <span class="nav-text">交换(switch)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#电路交换-circuit-switching"><span class="nav-number">5.1.</span> <span class="nav-text">电路交换(circuit switching)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包交换-package-switching"><span class="nav-number">5.2.</span> <span class="nav-text">包交换(package switching)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郭冬冬</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://gordon0518.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2017/10/30/Network-Physical-layer/';
+          this.page.identifier = '2017/10/30/Network-Physical-layer/';
+          this.page.title = 'Network-Physical layer';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://gordon0518.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("E7BCmqy3B7tkhoIeockPTGU5-gzGzoHsz", "i20gUVUGAk8kUCt4N4hG7ghd");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

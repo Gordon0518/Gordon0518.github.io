@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring,Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="《Spring in Action》读书笔记和总结。Spring官网: spring.io Spring的底层功能依赖于两个核心特性，依赖注入(dependency injection, DI)和面向切面编程(aspect-oriented programming, AOP)。Spring简化了Java开发，提供了轻量级的编程模型，增强了POJO(plain old Java object)的功能">
+<meta name="keywords" content="Spring,Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Core Spring">
+<meta property="og:url" content="http://yoursite.com/2017/09/10/Core-Spring/index.html">
+<meta property="og:site_name" content="Gordong">
+<meta property="og:description" content="《Spring in Action》读书笔记和总结。Spring官网: spring.io Spring的底层功能依赖于两个核心特性，依赖注入(dependency injection, DI)和面向切面编程(aspect-oriented programming, AOP)。Spring简化了Java开发，提供了轻量级的编程模型，增强了POJO(plain old Java object)的功能">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/module.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/proxy.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/pointcut.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/limit.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/define1.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/define2.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/xmlAdvice.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/javaConfig.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/xmlConfig.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/JavaAround.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/XMLAround.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/argument.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/JavaArgument.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/XMLArgument.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/10/Core-Spring/new.png">
+<meta property="og:updated_time" content="2017-09-20T14:03:49.587Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Core Spring">
+<meta name="twitter:description" content="《Spring in Action》读书笔记和总结。Spring官网: spring.io Spring的底层功能依赖于两个核心特性，依赖注入(dependency injection, DI)和面向切面编程(aspect-oriented programming, AOP)。Spring简化了Java开发，提供了轻量级的编程模型，增强了POJO(plain old Java object)的功能">
+<meta name="twitter:image" content="http://yoursite.com/2017/09/10/Core-Spring/module.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/10/Core-Spring/"/>
+
+
+
+
+
+  <title>Core Spring | Gordong</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?95ac7d2cf2ac052e787d934c29dac40e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gordong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">GuoDongDong's Personal Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/10/Core-Spring/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郭冬冬">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gordong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Core Spring</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-10T16:11:15+08:00">
+                2017-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Develop-Manual/" itemprop="url" rel="index">
+                    <span itemprop="name">Develop Manual</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/10/Core-Spring/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/10/Core-Spring/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/09/10/Core-Spring/" class="leancloud_visitors" data-flag-title="Core Spring">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>《<a href="https://www.manning.com/books/spring-in-action-fourth-edition" target="_blank" rel="noopener">Spring in Action</a>》读书笔记和总结。Spring官网: <a href="https://spring.io/" target="_blank" rel="noopener">spring.io</a></p>
+<p>Spring的底层功能依赖于两个核心特性，依赖注入(dependency injection, DI)和面向切面编程(aspect-oriented programming, AOP)。Spring简化了Java开发，提供了轻量级的编程模型，增强了POJO(plain old Java object)的功能。DI和AOP都是为了实现接口和功能的松耦合(Loose Coupling)，并且在实现上最大化的采用最小侵入性编程。<br><a id="more"></a><br><img src="module.png" alt="The Spring Framework is made up of six well-defined module categories"></p>
+<h2 id="DI"><a href="#DI" class="headerlink" title="DI"></a>DI</h2><p>实现接口上的松耦合。为了关联各接口之间的调用和依赖，Spring采用装配bean方式。建立应用接口间依赖关系的行为称为装配(Wiring)。</p>
+<p>Spring应用上下文(Application Context)负责对象的创建和组装。</p>
+<p>Spring提供三种主要的装配注入机制:</p>
+<ol>
+<li>隐式的bean自动装配机制；</li>
+<li>显示Java配置；</li>
+<li>显示XML配置。</li>
+</ol>
+<h3 id="自动化装配bean"><a href="#自动化装配bean" class="headerlink" title="自动化装配bean"></a>自动化装配bean</h3><p>先定义需要的组件component，其次开启组件扫描(Component scanning)，最后调用其他组件。Spring会自动发现应用上下文中创建的bean。</p>
+<h4 id="定义组件"><a href="#定义组件" class="headerlink" title="定义组件"></a>定义组件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Component(&quot;beanName&quot;)	//beanName不填写，默认为首字母小写的类名</span><br><span class="line">public class Impl implements Interface &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="开启组件扫描"><a href="#开启组件扫描" class="headerlink" title="开启组件扫描"></a>开启组件扫描</h4><figure class="highlight java"><figcaption><span>config</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AutoConfig</span> </span>&#123; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>默认以配置类所在的包作为基础包(base package)扫描组件。<code>@ComponentScan(basePackages=&quot;pkgName&quot;)</code>一个包、<code>@ComponentScan(basePackages={&quot;pkgName1&quot;, &quot;pkgName2&quot;})</code>多个包、<code>@ComponentScan(basePackageClasses={Interface1.class, Impl2.class})</code>类或接口所在的包作为组件扫描的基础包。<br><figure class="highlight xml"><figcaption><span>config</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"pkg"</span> /&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="调用其他组件"><a href="#调用其他组件" class="headerlink" title="调用其他组件"></a>调用其他组件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class Impl implements Interface &#123;</span><br><span class="line">	@Autowired</span><br><span class="line">	private InvokedClass ref;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Java-Config"><a href="#Java-Config" class="headerlink" title="Java Config"></a>Java Config</h3><p>添加配置并声明各接口调用依赖关系即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class EatConfig &#123;</span><br><span class="line"></span><br><span class="line">  @Bean</span><br><span class="line">  public Fruit fruit() &#123;</span><br><span class="line">    return new Apple(System.out);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  @Bean</span><br><span class="line">  public Person person() &#123;</span><br><span class="line">    return new Man(fruit());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="XML-Config"><a href="#XML-Config" class="headerlink" title="XML Config"></a>XML Config</h3><h4 id="构造器注入"><a href="#构造器注入" class="headerlink" title="构造器注入"></a>构造器注入</h4><p>可以使用全称<code>&lt;constructor-arg /&gt;</code>或<code>c-</code>标签<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;person&quot; class=&quot;eat.Person&quot;&gt;</span><br><span class="line">	&lt;constructor-arg ref=&quot;fruit&quot; /&gt;    &lt;!-- bean引用注入 --&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;fruit&quot; class=&quot;eat.Fruit&quot;&gt;</span><br><span class="line">	&lt;constructor-arg value=&quot;#&#123;T(System).out&#125;&quot; /&gt;	&lt;!-- 字面量注入 --&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;list&quot; class=&quot;eat.Collection&quot;&gt;</span><br><span class="line">	&lt;constructor-arg&gt;</span><br><span class="line">      &lt;list&gt;	&lt;!-- 集合注入 --&gt;</span><br><span class="line">        &lt;ref bean=&quot;one&quot; /&gt;</span><br><span class="line">        &lt;ref bean=&quot;two&quot; /&gt;</span><br><span class="line">        &lt;ref bean=&quot;three&quot; /&gt;</span><br><span class="line">      &lt;/list&gt;</span><br><span class="line">    &lt;/constructor-arg&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;list&quot; class=&quot;eat.Collection&quot;&gt;</span><br><span class="line">	&lt;constructor-arg&gt;</span><br><span class="line">      &lt;list&gt;	&lt;!-- 集合注入 --&gt;</span><br><span class="line">        &lt;value&gt;one&lt;/value&gt;</span><br><span class="line">        &lt;value&gt;two&lt;/value&gt;</span><br><span class="line">        &lt;value&gt;three&lt;/value&gt;</span><br><span class="line">      &lt;/list&gt;</span><br><span class="line">    &lt;/constructor-arg&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
+<p>作为一个通用规则，对强依赖使用构造器注入，对弱依赖使用属性注入。</p>
+<h4 id="属性注入"><a href="#属性注入" class="headerlink" title="属性注入"></a>属性注入</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;person&quot; class=&quot;eat.Person&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;fruit&quot; ref=&quot;fruit&quot; /&gt;	&lt;!-- 引用注入 --&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;fruit&quot; class=&quot;eat.Fruit&quot;&gt;</span><br><span class="line">  &lt;property name=&quot;apple&quot; value=&quot;I eating an apple&quot; /&gt;	&lt;!-- 字面量注入 --&gt;</span><br><span class="line">  &lt;property name=&quot;num&quot;&gt;</span><br><span class="line">    &lt;list&gt;	&lt;!-- 集合注入 --&gt;</span><br><span class="line">      &lt;value&gt;one&lt;/value&gt;</span><br><span class="line">      &lt;value&gt;two&lt;/value&gt;</span><br><span class="line">      &lt;value&gt;three&lt;/value&gt;</span><br><span class="line">    &lt;/list&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="导入和混合配置"><a href="#导入和混合配置" class="headerlink" title="导入和混合配置"></a>导入和混合配置</h3><h4 id="Java-Config-1"><a href="#Java-Config-1" class="headerlink" title="Java Config"></a>Java Config</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@Import(&#123;OneConfig.class, TwoConfig.class&#125;)</span><br><span class="line">@ImportResource(&quot;classpath:three-config.xml&quot;)</span><br><span class="line">public class RootConfig &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="XML-Config-1"><a href="#XML-Config-1" class="headerlink" title="XML Config"></a>XML Config</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean class=&quot;package.OneConfig&quot; /&gt;</span><br><span class="line">&lt;bean resource=&quot;three-config.xml&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="高级装配"><a href="#高级装配" class="headerlink" title="高级装配"></a>高级装配</h2><h3 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h3><p>应用程序在不同环境的迁移，如数据库配置、加密算法以及与外部系统集成是否Mock是跨环境部署时会发生变化的几个典型例子。<br>如果在XML配置文件中配置(Maven的profiles)，在构建阶段确定将配置编译部署，问题在于为每种环境重新构建应用，而Spring的profile是在运行时确定配置源。</p>
+<h4 id="定义profile"><a href="#定义profile" class="headerlink" title="定义profile"></a>定义profile</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class DataSourceConfig &#123;</span><br><span class="line">  </span><br><span class="line">  @Bean(destroyMethod = &quot;shutdown&quot;)</span><br><span class="line">  @Profile(&quot;dev&quot;)</span><br><span class="line">  public DataSource embeddedDataSource() &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @Bean</span><br><span class="line">  @Profile(&quot;prod&quot;)</span><br><span class="line">  public DataSource jndiDataSource() &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans profile=&quot;dev&quot;&gt;</span><br><span class="line">  &lt;jdbc:embedded-database id=&quot;dataSource&quot; type=&quot;H2&quot;&gt;</span><br><span class="line">    &lt;jdbc:script location=&quot;classpath:schema.sql&quot; /&gt;</span><br><span class="line">    &lt;jdbc:script location=&quot;classpath:test-data.sql&quot; /&gt;</span><br><span class="line">  &lt;/jdbc:embedded-database&gt;</span><br><span class="line">&lt;/beans&gt;</span><br><span class="line"></span><br><span class="line">&lt;beans profile=&quot;prod&quot;&gt;</span><br><span class="line">  &lt;jee:jndi-lookup id=&quot;dataSource&quot;</span><br><span class="line">    lazy-init=&quot;true&quot;</span><br><span class="line">    jndi-name=&quot;jdbc/myDatabase&quot;</span><br><span class="line">    resource-ref=&quot;true&quot;</span><br><span class="line">    proxy-interface=&quot;javax.sql.DataSource&quot; /&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="激活profile"><a href="#激活profile" class="headerlink" title="激活profile"></a>激活profile</h4><p>有多种方式设置这两个属性，<code>spring.profiles.active</code>优先<code>spring.profiles.default</code>。</p>
+<ul>
+<li>As initialization parameters on DispatcherServlet </li>
+<li>As context parameters of a web application </li>
+<li>As JNDI entries </li>
+<li>As environment variables </li>
+<li>As JVM system properties </li>
+<li>Using the @ActiveProfiles annotation on an integration test class </li>
+</ul>
+<p>例如在Web应用中，设置<code>spring.profiles.default</code>的web.xml文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;web-app ...&gt;</span><br><span class="line">	&lt;!-- 为上下文设置默认的profile --&gt;</span><br><span class="line">	&lt;context-param&gt;</span><br><span class="line">		&lt;param-name&gt;spring.profiles.default&lt;/param-name&gt;</span><br><span class="line">		&lt;param-value&gt;dev&lt;/param-value&gt;</span><br><span class="line">	&lt;/context-param&gt;</span><br><span class="line">	&lt;!-- 为Servlet设置默认的profile --&gt;</span><br><span class="line">	&lt;servlet&gt;</span><br><span class="line">		&lt;servlet-name&gt;appServlet&lt;/servlet-name&gt;</span><br><span class="line">		&lt;servlet-class&gt;</span><br><span class="line">			org.springframework.web.servlet.DispatcherServlet</span><br><span class="line">		&lt;/servlet-class&gt;</span><br><span class="line">		&lt;init-param&gt;</span><br><span class="line">			&lt;param-name&gt;spring.profiles.default&lt;/param-name&gt;</span><br><span class="line">			&lt;param-value&gt;dev&lt;/param-value&gt;</span><br><span class="line">		&lt;/init-param&gt;</span><br><span class="line">		&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</span><br><span class="line">	&lt;/servlet&gt;</span><br><span class="line">&lt;/web-app&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Conditional-beans"><a href="#Conditional-beans" class="headerlink" title="Conditional beans"></a>Conditional beans</h3><p>如果希望某个特定的bean创建后或环境变量设置后才会创建这个bean。Spring4引入了<code>@Conditional</code>注解。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class MagicConfig &#123;</span><br><span class="line"></span><br><span class="line">  @Bean</span><br><span class="line">  @Conditional(MagicExistsCondition.class)</span><br><span class="line">  public MagicBean magicBean() &#123;</span><br><span class="line">    return new MagicBean();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>设置给<code>@Conditional</code>的类需实现<code>Condition</code>接口，它会通过该接口进行对比。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface Condition &#123;</span><br><span class="line">	boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>matches()</code>返回true，会创建带有<code>@Conditional</code>注解的类。否则反之。<br>PS: <code>@Profile</code>本身也使用了<code>@Conditional</code>注解，并引用<code>ProfileCondition</code>作为<code>Condition</code>实现。可查看Spring4以上源码。</p>
+<h3 id="处理自动装配歧义性"><a href="#处理自动装配歧义性" class="headerlink" title="处理自动装配歧义性"></a>处理自动装配歧义性</h3><p>场景: 一个接口多个实现。</p>
+<ol>
+<li><p>定义限定符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Component    //也可以是所有使用了@Component的注解，如: @Service、@Controller、@Ropository等</span><br><span class="line">@Qualifier(&quot;one&quot;)	//该注解可省略，默认bean ID为首字母为小写的实现类名字。</span><br><span class="line">public class One implements Number &#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用限定符。<code>@Qualifier</code>搭配<code>@Autowired</code>，@Autowired默认按类型装配</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Autowired</span><br><span class="line">@Qualifier(&quot;one&quot;)</span><br><span class="line">private Number num;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>或者直接使用J2EE自带的<code>@Resource</code>，默认按名称进行装配，减少了与spring的耦合(推荐)。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Resource(name = &quot;one&quot;)</span><br><span class="line">private Number num;</span><br></pre></td></tr></table></figure></p>
+<h3 id="bean的作用域"><a href="#bean的作用域" class="headerlink" title="bean的作用域"></a>bean的作用域</h3><p>默认情况下，Spring Application Context中所有bean都是以单例(singleton)创建的。也就是说，不管特定的bean被注入到其他bean多少次，每次注入的都是同一个实例。大多数情况下，单例bean是很理想的状态。但有时候所用类是mutable，重用是不安全的。<br>Spring定义了四种作用域: </p>
+<ul>
+<li>单例(singleton)：在整个应用中，只创建bean的一个实例。</li>
+<li>原型(Prototype)：每次注入或通过Spring应用上下文获取的时候，都会创建一个新的bean实例。</li>
+<li>会话(Session)：在Web应用中，为每个会话创建一个bean实例。</li>
+<li>请求(Request)：在Web应用中，为每次请求创建一个bean实例。</li>
+</ul>
+<h4 id="声明bean为原型作用域"><a href="#声明bean为原型作用域" class="headerlink" title="声明bean为原型作用域"></a>声明bean为原型作用域</h4><p>JavaConfig<code>@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)</code>;XMLConfig<code>scope=&quot;prototype&quot;</code>。</p>
+<h4 id="声明bean为会话和请求作用域"><a href="#声明bean为会话和请求作用域" class="headerlink" title="声明bean为会话和请求作用域"></a>声明bean为会话和请求作用域</h4><p>在Web应用中，以购物车bean为例，单例和原型作用域就不适用，会话作用域是最合适的，因为它与特定用户关联性最大。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">@Scope(</span><br><span class="line">    value=WebApplicationContext.SCOPE_SESSION,</span><br><span class="line">    proxyMode=ScopedProxyMode.INTERFACES)</span><br><span class="line">public ShoppingCart cart() &#123; ... &#125;</span><br></pre></td></tr></table></figure></p>
+<p>在每个用户购物完成后会调用保存订单service，也就是会将会话级别的 ShoppingCart bean注入到单例级别的 StoreService bean中。proxyMode属性解决了将会话或请求作用域的bean注入到单例bean的问题。<br><img src="proxy.png" alt="作用域代理能够延迟注入请求和会话作用域的bean"></p>
+<p>基于接口代理：<code>proxyMode=ScopedProxyMode.INTERFACES</code> or <code>&lt;aop:scoped-proxy proxy-target-class=&quot;false&quot; /&gt;</code><br>基于实现类代理：<code>proxyMode=ScopedProxyMode.TARGET_CLASS</code> or <code>&lt;aop:scoped-proxy /&gt;</code></p>
+<h3 id="运行时值注入"><a href="#运行时值注入" class="headerlink" title="运行时值注入"></a>运行时值注入</h3><p>避免将值硬编码在配置类中，使其在运行时确定。</p>
+<h4 id="声明属性源并通过Spring的Environment来检索属性"><a href="#声明属性源并通过Spring的Environment来检索属性" class="headerlink" title="声明属性源并通过Spring的Environment来检索属性"></a>声明属性源并通过Spring的Environment来检索属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@PropertySource(&quot;classpath:/com/soundsystem/app.properties&quot;)	//声明属性源</span><br><span class="line">public class EnvironmentConfig &#123;</span><br><span class="line"></span><br><span class="line">  @Autowired</span><br><span class="line">  Environment env;</span><br><span class="line">  </span><br><span class="line">  @Bean</span><br><span class="line">  public BlankDisc blankDisc() &#123;</span><br><span class="line">    return new BlankDisc(</span><br><span class="line">        env.getProperty(&quot;disc.title&quot;),</span><br><span class="line">        env.getProperty(&quot;disc.artist&quot;));	//检索属性值</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="属性占位符-Property-placeholders"><a href="#属性占位符-Property-placeholders" class="headerlink" title="属性占位符(Property placeholders)"></a>属性占位符(Property placeholders)</h4><p>为了使用占位符，需要配置一个 PropertySourcesPlaceholderConfigurer bean，它能够基于Spring Environment及其属性源来解析占位符。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() &#123;</span><br><span class="line">  return new PropertySourcesPlaceholderConfigurer();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans&gt;</span><br><span class="line">	&lt;context:property-placeholder /&gt;	&lt;!-- 自动生成PropertySourcesPlaceholderConfigurer --&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>使用解析参数:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public BlankDisc(</span><br><span class="line">      @Value(&quot;$&#123;disc.title&#125;&quot;) String title,</span><br><span class="line">      @Value(&quot;$&#123;disc.artist&#125;&quot;) String artist) &#123;</span><br><span class="line">  this.title = title;</span><br><span class="line">  this.artist = artist;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Spring表达式语言-The-Spring-Expression-Language-SpEL"><a href="#Spring表达式语言-The-Spring-Expression-Language-SpEL" class="headerlink" title="Spring表达式语言(The Spring Expression Language, SpEL)"></a>Spring表达式语言(The Spring Expression Language, SpEL)</h4><p>SpEL表达式要放在”#{ … }”之中。</p>
+<ul>
+<li>引用bean、属性和方法。例如：<code>#{sgtPeppers}</code>、<code>#{sgtPeppers.artist}</code>、<code>#{artistSelector.selectArtist()}</code>、<code>#{artistSelector.selectArtist().toUpperCase()}</code></li>
+<li>访问Java类。’T()’运算符结果是一个class对象，能够访问目标类型的静态方法和常量。<code>#{T(System).currentTimeMillis()}</code>、<code>T(java.lang.Math).PI</code>、<code>T(java.lang.Math).random()</code></li>
+<li>对值进行算术、关系和逻辑运算。<code>#{T(java.lang.Math).PI * circle.radius ^ 2}</code>、<code>#{disc.title + &#39; by &#39; + disc.artist}</code>、<code>#{scoreboard.score &gt; 1000 ? &quot;Winner!&quot; : &quot;Loser&quot;}</code></li>
+<li>匹配正则表达式(Regular Expression, regex)。<code>matches</code>运算符对String类型的文本(左边参数)应用正则(右边参数)。<code>#{admin.email matches &#39;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.com&#39;}</code></li>
+<li>计算集合。<code>#{jukebox.songs[4].title}</code>；查询运算符”.?[]”用来对集合进行过滤得到集合子集，<code>#{jukebox.songs.?[artist eq &#39;Aerosmith&#39;]}</code>；查询第一个匹配项”.^[]”和查询最后一个匹配项”.$[]”；投影运算符”.![]”，如将title属性投影到一个新的String类型集合中<code>#{jukebox.songs.![title]}</code></li>
+</ul>
+<p>PS: 尽可能让表达式保持简洁，不要让表达式太智能复杂。</p>
+<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><p>实现功能上的松耦合。把系统核心业务逻辑组件和额外功能如日志、事务管理和安全这样的服务组件分离开来。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;aop:config&gt;</span><br><span class="line">  &lt;aop:aspect ref=&quot;asp&quot;&gt;</span><br><span class="line">    &lt;aop:pointcut id=&quot;pc&quot;</span><br><span class="line">        expression=&quot;execution(* *.method(..))&quot;/&gt;</span><br><span class="line">      </span><br><span class="line">    &lt;aop:before pointcut-ref=&quot;pc&quot; </span><br><span class="line">        method=&quot;doBeforePc&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;aop:after pointcut-ref=&quot;pc&quot; </span><br><span class="line">        method=&quot;doAfterPc&quot;/&gt;</span><br><span class="line">  &lt;/aop:aspect&gt;</span><br><span class="line">&lt;/aop:config&gt;</span><br></pre></td></tr></table></figure></p>
+<p>Spring容器(container)负责创建、装配、配置并管理对象的整个生命周期，从生存到死亡。Spring容器分为两种类型: BeanFactory(bean工厂)是最简单的容器，提供基本的DI支持；Application Context(应用上下文)基于BeanFactory构建，提供应用框架级别的服务。(推荐使用)</p>
+<h4 id="通知-Advice"><a href="#通知-Advice" class="headerlink" title="通知(Advice)"></a>通知(Advice)</h4><p>通知定义了切面是什么以及何时使用。Spring切面可以应用5种类型的通知，并使用AspectJ注解来声明通知方法: </p>
+<ul>
+<li>前置通知-<code>@Before</code>: The advice functionality takes place before the advised method is invoked.</li>
+<li>后置通知-<code>@After</code>: The advice functionality takes place after the advised method completes, regardless of the outcome.</li>
+<li>返回通知-<code>@AfterReturning</code>: The advice functionality takes place after the advised method successfully completes. </li>
+<li>异常通知-<code>@AfterThrowing</code>: The advice functionality takes place after the advised method throws an exception.</li>
+<li>环绕通知-<code>@Around</code>: The advice wraps the advised method, providing some functionality before and after the advised method is invoked. </li>
+</ul>
+<h4 id="切点-Pointcut"><a href="#切点-Pointcut" class="headerlink" title="切点(Pointcut)"></a>切点(Pointcut)</h4><p>切点定义在何处执行动作。Spring AOP所支持的AspectJ切点指示器: <code>args()</code>、<code>@args()</code>、<code>execution()</code>、<code>this()</code>、<code>target()</code>、<code>@target()</code>、<code>within()</code>、<code>@within()</code>、<code>@annotation</code>。只有execution指示器是实际执行匹配的，其他都是用来限制匹配的，所以execution指示器是编写切点定义时最主要的指示器。<br><img src="pointcut.png" alt="使用AspectJ切点表达式定义切点"><br><img src="limit.png" alt="使用within()限制切点范围"><br><code>bean()</code>指示器使用bean ID或name作为参数来限制切点只匹配特定的bean。<code>execution(* concert.Performance.perform()) and bean(&#39;woodstock&#39;)</code>。</p>
+<h4 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h4><ol>
+<li>定义切面<br><img src="define1.png" alt=""><br><img src="define2.png" alt="JavaAdvice"><br>XML Config:<br><img src="xmlAdvice.png" alt="XMLAdvice"></li>
+<li>启用AspectJ注解的自动代理<br><img src="javaConfig.png" alt="JavaConfig"><br><img src="xmlConfig.png" alt="XMLConfig"></li>
+</ol>
+<h4 id="创建环绕通知"><a href="#创建环绕通知" class="headerlink" title="创建环绕通知"></a>创建环绕通知</h4><p><img src="JavaAround.png" alt="JavaAround"><br><img src="XMLAround.png" alt="XMLAround"></p>
+<h4 id="通知中增加参数"><a href="#通知中增加参数" class="headerlink" title="通知中增加参数"></a>通知中增加参数</h4><p><img src="argument.png" alt=""><br><img src="JavaArgument.png" alt="JavaArgument"><br><img src="XMLArgument.png" alt="XMLArgument"><br>切点表达式中的args(trackNumber)限定符表明传递给 playTrack() 方法的int类型参数也会传递到通知中去，参数的名称trackNumber也与切点方法签名中的参数相匹配，这样就完成了从命名切点到通知方法的参数转移。</p>
+<h4 id="通过注解引入新功能"><a href="#通过注解引入新功能" class="headerlink" title="通过注解引入新功能"></a>通过注解引入新功能</h4><p>不用直接修改对象或类的定义就能够为对象或类增加新的方法。一种情况是设计上在原接口上增加通用方法对所有的实现并不适用，一种情况是使用第三方实现没有源码的时候。借助于AOP的引入功能，不必在设计上妥协或者侵入性地改变现有的实现。<br><img src="new.png" alt="代理拦截调用并委托给实现该方法的其他对象"><br><figure class="highlight java"><figcaption><span>New</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EncoreableIntroducer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@DeclareParents</span>(value=<span class="string">"concert.Performance+"</span>,</span><br><span class="line">                  defaultImpl=DefaultEncoreable.class)</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> Encoreable encoreable;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight xml"><figcaption><span>New</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">aop:declare-parents</span></span></span><br><span class="line"><span class="tag">    <span class="attr">types-matching</span>=<span class="string">"concert.Performance+"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">implement-interface</span>=<span class="string">"concert.Encoreable"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">default-impl</span>=<span class="string">"concert.DefaultEncoreable"</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过<code>@DeclareParents</code>注解将新接口引入到现有的bean中。value属性指定引入到哪个接口bean上，加号’+’表示该对象的子类型，而不是其本身；<code>defaultImpl</code>属性指定了引入的功能；</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="郭冬冬 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="郭冬冬 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/06/格言与文摘/" rel="next" title="格言与文摘">
+                <i class="fa fa-chevron-left"></i> 格言与文摘
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/14/MySQL安装配置与基本使用/" rel="prev" title="MySQL安装配置与基本使用">
+                MySQL安装配置与基本使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="郭冬冬" />
+            
+              <p class="site-author-name" itemprop="name">郭冬冬</p>
+              <p class="site-description motion-element" itemprop="description">技术总结和生活感想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/gordon0518" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guodongdong0518@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="gordon0518.github.io" target="_blank" title="Hexo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Hexo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.jianshu.com/u/0a500b9f1fe1" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DI"><span class="nav-number">1.</span> <span class="nav-text">DI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自动化装配bean"><span class="nav-number">1.1.</span> <span class="nav-text">自动化装配bean</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义组件"><span class="nav-number">1.1.1.</span> <span class="nav-text">定义组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启组件扫描"><span class="nav-number">1.1.2.</span> <span class="nav-text">开启组件扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调用其他组件"><span class="nav-number">1.1.3.</span> <span class="nav-text">调用其他组件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-Config"><span class="nav-number">1.2.</span> <span class="nav-text">Java Config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XML-Config"><span class="nav-number">1.3.</span> <span class="nav-text">XML Config</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#构造器注入"><span class="nav-number">1.3.1.</span> <span class="nav-text">构造器注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性注入"><span class="nav-number">1.3.2.</span> <span class="nav-text">属性注入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入和混合配置"><span class="nav-number">1.4.</span> <span class="nav-text">导入和混合配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-Config-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">Java Config</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XML-Config-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">XML Config</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级装配"><span class="nav-number">2.</span> <span class="nav-text">高级装配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Profile"><span class="nav-number">2.1.</span> <span class="nav-text">Profile</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义profile"><span class="nav-number">2.1.1.</span> <span class="nav-text">定义profile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#激活profile"><span class="nav-number">2.1.2.</span> <span class="nav-text">激活profile</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conditional-beans"><span class="nav-number">2.2.</span> <span class="nav-text">Conditional beans</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理自动装配歧义性"><span class="nav-number">2.3.</span> <span class="nav-text">处理自动装配歧义性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bean的作用域"><span class="nav-number">2.4.</span> <span class="nav-text">bean的作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#声明bean为原型作用域"><span class="nav-number">2.4.1.</span> <span class="nav-text">声明bean为原型作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#声明bean为会话和请求作用域"><span class="nav-number">2.4.2.</span> <span class="nav-text">声明bean为会话和请求作用域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时值注入"><span class="nav-number">2.5.</span> <span class="nav-text">运行时值注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#声明属性源并通过Spring的Environment来检索属性"><span class="nav-number">2.5.1.</span> <span class="nav-text">声明属性源并通过Spring的Environment来检索属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性占位符-Property-placeholders"><span class="nav-number">2.5.2.</span> <span class="nav-text">属性占位符(Property placeholders)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring表达式语言-The-Spring-Expression-Language-SpEL"><span class="nav-number">2.5.3.</span> <span class="nav-text">Spring表达式语言(The Spring Expression Language, SpEL)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP"><span class="nav-number">3.</span> <span class="nav-text">AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通知-Advice"><span class="nav-number">3.0.1.</span> <span class="nav-text">通知(Advice)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#切点-Pointcut"><span class="nav-number">3.0.2.</span> <span class="nav-text">切点(Pointcut)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本流程"><span class="nav-number">3.0.3.</span> <span class="nav-text">基本流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建环绕通知"><span class="nav-number">3.0.4.</span> <span class="nav-text">创建环绕通知</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通知中增加参数"><span class="nav-number">3.0.5.</span> <span class="nav-text">通知中增加参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过注解引入新功能"><span class="nav-number">3.0.6.</span> <span class="nav-text">通过注解引入新功能</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郭冬冬</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://gordon0518.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2017/09/10/Core-Spring/';
+          this.page.identifier = '2017/09/10/Core-Spring/';
+          this.page.title = 'Core Spring';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://gordon0518.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("E7BCmqy3B7tkhoIeockPTGU5-gzGzoHsz", "i20gUVUGAk8kUCt4N4hG7ghd");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Network," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="网络链路可以分为两大类：点到点连接和广播信道。广播信道也称为多路访问信道，其主要需要解决的关键问题是当多方竞争信道时如何确定谁拥有使用权，用来确定多路访问信道下一个使用者的协议称为 介质访问控制(MAC, Media Access Control Layer) 子层，其属于数据链路层的一个子层，技术上MAC子层位于数据链路层底部。在LAN中，MAC子层很重要，特别是在无线局域网中，因为无线本质上就">
+<meta name="keywords" content="Network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络协议-MAC层">
+<meta property="og:url" content="http://yoursite.com/2017/12/12/网络协议-MAC层/index.html">
+<meta property="og:site_name" content="Gordong">
+<meta property="og:description" content="网络链路可以分为两大类：点到点连接和广播信道。广播信道也称为多路访问信道，其主要需要解决的关键问题是当多方竞争信道时如何确定谁拥有使用权，用来确定多路访问信道下一个使用者的协议称为 介质访问控制(MAC, Media Access Control Layer) 子层，其属于数据链路层的一个子层，技术上MAC子层位于数据链路层底部。在LAN中，MAC子层很重要，特别是在无线局域网中，因为无线本质上就">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2017/12/12/网络协议-MAC层/bitmap.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/12/网络协议-MAC层/token.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/12/网络协议-MAC层/tree.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/12/网络协议-MAC层/wireless.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/12/网络协议-MAC层/mac-frame.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/12/网络协议-MAC层/switch.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/12/网络协议-MAC层/different%20layer.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/12/网络协议-MAC层/VLAN.png">
+<meta property="og:updated_time" content="2017-12-12T13:11:56.530Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络协议-MAC层">
+<meta name="twitter:description" content="网络链路可以分为两大类：点到点连接和广播信道。广播信道也称为多路访问信道，其主要需要解决的关键问题是当多方竞争信道时如何确定谁拥有使用权，用来确定多路访问信道下一个使用者的协议称为 介质访问控制(MAC, Media Access Control Layer) 子层，其属于数据链路层的一个子层，技术上MAC子层位于数据链路层底部。在LAN中，MAC子层很重要，特别是在无线局域网中，因为无线本质上就">
+<meta name="twitter:image" content="http://yoursite.com/2017/12/12/网络协议-MAC层/bitmap.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/12/网络协议-MAC层/"/>
+
+
+
+
+
+  <title>网络协议-MAC层 | Gordong</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?95ac7d2cf2ac052e787d934c29dac40e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gordong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">GuoDongDong's Personal Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/12/网络协议-MAC层/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郭冬冬">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gordong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">网络协议-MAC层</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-12T21:10:34+08:00">
+                2017-12-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Network/" itemprop="url" rel="index">
+                    <span itemprop="name">Network</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/12/网络协议-MAC层/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/12/12/网络协议-MAC层/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/12/12/网络协议-MAC层/" class="leancloud_visitors" data-flag-title="网络协议-MAC层">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>网络链路可以分为两大类：点到点连接和广播信道。广播信道也称为多路访问信道，其主要需要解决的关键问题是当多方竞争信道时如何确定谁拥有使用权，用来确定多路访问信道下一个使用者的协议称为 <strong>介质访问控制(MAC, Media Access Control Layer)</strong> 子层，其属于数据链路层的一个子层，技术上MAC子层位于数据链路层底部。在LAN中，MAC子层很重要，特别是在无线局域网中，因为无线本质上就是广播信道。<br><a id="more"></a></p>
+<h2 id="多路访问协议"><a href="#多路访问协议" class="headerlink" title="多路访问协议"></a>多路访问协议</h2><h3 id="ALOHA协议"><a href="#ALOHA协议" class="headerlink" title="ALOHA协议"></a>ALOHA协议</h3><p>ALOHA一种使用无线广播技术的分组交换计算机网络，实现一点到多点的数据通信。取名ALOHA，是夏威夷人表示致意的问候语，这项研究计划的目的是要解决夏威夷群岛之间的通信问题。协议分为纯ALOHA和分槽ALOHA，区别在于时间是连续的还是分成离散槽。</p>
+<h4 id="纯ALOHA"><a href="#纯ALOHA" class="headerlink" title="纯ALOHA"></a>纯ALOHA</h4><p>基本思想是：当用户有数据需要发送时就传输，发送方通过侦听信道检查是否发生看冲突，多个用户共享同一个信道就会产生竞争，假设两个发送方同时传输数据时就会发生冲突，两个冲突的帧都将被损坏，这两个发送方各自随机等待不同时间，然后再次发生帧。<br>不过对于这种任何人都可以随意发送的传输方式，在用户量很多的时候成功率基本为0，协议基本瘫痪。经测试，在不同用户量的情况下，最好的信道利用成功率为18%。</p>
+<h4 id="分槽ALOHA"><a href="#分槽ALOHA" class="headerlink" title="分槽ALOHA"></a>分槽ALOHA</h4><p>策略是将时间分成离散的间隔，称为时间槽(slot)，每个时间槽对应于一帧。站不允许用户每次敲入回车键就立即发送帧，必须要等到一个时间槽的开始时刻。其最好的信道利用成功率是37%。</p>
+<h3 id="载波侦听协议-Carrier-Sense-Protocol"><a href="#载波侦听协议-Carrier-Sense-Protocol" class="headerlink" title="载波侦听协议(Carrier Sense Protocol)"></a>载波侦听协议(Carrier Sense Protocol)</h3><p>站监听信道是否存在载波，即是否有传输，在发送帧前采取相应的动作。</p>
+<h4 id="1-坚持"><a href="#1-坚持" class="headerlink" title="1-坚持"></a>1-坚持</h4><p>当一个站要发送数据时，首先侦听信道，如果信道空闲就发送该帧，如果信道忙，该站等待直至信道变成空闲然后再发送帧。不过这个方案还是会发生冲突，当两个站在第三个站的发生过程中准备好了发生的帧，它们都会等待直到当前的传输结束，然后双方将确定同时开始传输，冲突发生了。如果发生冲突，站随机等待一段时间，然后再从头开始上述过程。<br>因为当站发现信道空闲时，它传输数据的概率为1，故称为1-坚持载波侦听。</p>
+<h4 id="非坚持"><a href="#非坚持" class="headerlink" title="非坚持"></a>非坚持</h4><p>站发送数据前依然侦听信道，发现信道空闲就传输数据，如果发现信道正在传输中，则该站并不持续对信道进行监听，以便传输结束后立即抓住机会发送数据，相反它会取消监听然后随机等待一段时间重复上述算法。<br>因此该算法将会导致更好的信道利用率，但也会带来更大的延迟。</p>
+<h4 id="p-坚持"><a href="#p-坚持" class="headerlink" title="p-坚持"></a>p-坚持</h4><p>它适用于分时间槽的信道。站发送数据前侦听信道，发现信道空闲就按照概率p发送数据，以概率 <code>q=1-p</code> 将发送推迟到一下时间槽。这个过程一直重复下去，直到帧被发送出去，或者另一个站开始发送数据。</p>
+<h3 id="无冲突协议"><a href="#无冲突协议" class="headerlink" title="无冲突协议"></a>无冲突协议</h3><p>假设共有N个站，每个站都有唯一的地址，地址范围从0到N-1。</p>
+<h4 id="位图协议-Bitmap"><a href="#位图协议-Bitmap" class="headerlink" title="位图协议(Bitmap)"></a>位图协议(Bitmap)</h4><p>采用了基本位图法，使用时间槽，称为竞争期。每个竞争期正好包含N个位置槽，如果0号站有一帧时间要发送，则它在第0个槽中传送1位，在这个槽中，不允许其他站发送。一般地，j号站通过在j号槽中插入1位来声明自己有帧要发送，当所有N个槽都经过后，每个站都知道了哪些站希望传送数据，这时候它们便按照数字顺序开始传送数据了。</p>
+<p><img src="bitmap.png" alt="bitmap"></p>
+<p>由于每个站都同意下一个是谁传输，所以永远也不会发生冲突，当最后一个就绪站传送完它的帧后，于是另一个N位竞争期又开始了。<br>如果一个站在它对应的位槽刚刚经过就准备好了要发送的数据，那它就非常不幸，只能保持沉默；直到每个站都获得了发送数据的机会，新的位图再次到来，它才能通过位槽表明自己有传输的意愿。<br>当某个站要发送数据时，当前槽处于位图中间的某个地方，平均对于低序号站来说，如0号站必须等待完成当前扫描的N/2个槽，再等待完成下一次扫描的另外N个槽，然后才能开始传输数据；对于高序号站，只需等待当面半个扫描周期N/2位槽，就可以传输数据了，不必等待到下一次扫描。由于低序号的站必须等待平均1.5N个槽，而高序号的站必须等待平均0.5N个槽，因此对所有站而言，要平均等待N个槽。</p>
+<h4 id="令牌传递-Token"><a href="#令牌传递-Token" class="headerlink" title="令牌传递(Token)"></a>令牌传递(Token)</h4><p>类似位图的实质让每个站以预定义的顺序轮流发送一帧，该方案通过传递一个称为 <strong>令牌</strong> 的短消息，该令牌以 <strong>令牌环(Token Ring)</strong> 的顺序从一个站传到下一个站。令牌代表了发送权限，如果站有等待传输的帧数据，当它接受到令牌就可以发送帧，然后再把令牌传递到下一站，如果它没有排队的帧要传，则它只是简单地把令牌传递下去。</p>
+<p><img src="token.png" alt="token"></p>
+<p>令牌和位图的细微差别在于，在周期中所有的位置是均等的，它们的等待发送数据的时间是一样的，所以不存在偏向低编号或者高编号的情况。</p>
+<h4 id="二进制倒计数-Binary-Countdown"><a href="#二进制倒计数-Binary-Countdown" class="headerlink" title="二进制倒计数(Binary Countdown)"></a>二进制倒计数(Binary Countdown)</h4><p>令牌和位图每个站的开销是1位，所以该协议不可能很好的扩展到含有上千个站的网络中。而该方案基本思路是：如果一个站想要使用信道，它就以二进制位串的形式从高序号位开始广播自己的地址，假设所有地址都有同样的长度，不同站在发送数据的同时，地址中相同位进行布尔或(OR)运算，一个站只要看到自己的对应地址位中的0值位置被改写成了1，则它必须放弃竞争。<br>举例：如果站0010、0100、1001和1010<br>都要试图发送数据获取信道，从高位第4位开始OR得到1，站0010和0100看到了1，立即明白比它们高序号的站也在竞争信道，所以它们放弃这一轮的竞争，而站1001和1010则继续竞争信道，接下来第3位OR得到0，于是两者继续竞争，第2位OR得到1，所以站1001放弃，站1010获得了竞争，它现在可以传输一帧，之后又开始新一轮的竞争。<br>高序站的优先级比低序站的优先级高，这可能是好事也可能是坏事，取决于上下文。</p>
+<h3 id="有限竞争协议-Limited-Contention-Protocol"><a href="#有限竞争协议-Limited-Contention-Protocol" class="headerlink" title="有限竞争协议(Limited-Contention Protocol)"></a>有限竞争协议(Limited-Contention Protocol)</h3><p>有两个重要性能指标来衡量有竞争协议和无竞争协议：低负载下的延迟，以及高负载下的信道利用率。在负载较轻的情况下，竞争方法(ALOHA协议)更为理想，因为它的延迟较短(冲突很少发生)，无竞争方法有相对高的延迟；随着负载的增加，竞争方法对信道仲裁所需要的开销变得越来越大，而无竞争方法的信道效率反而得到提高。<br>把竞争协议和无冲突协议的优势结合起来，这样得到的新协议在低负载下采用竞争的做法而提供较短的延迟，在高负载下采用无冲突技术从而获得良好的信道效率，就称为有限竞争协议。首先将所有的站划分成组，只有0号组的成员才允许竞争0号时间槽，如果该组中一个成员竞争成功了，则它获得信道马上传送它的帧，该次竞争期结束准备开始下一个竞争期；如果该时间槽是空闲的或者发生了冲突，则1号组的成员开始竞争1号时间槽，以此类推。这里需要的是一种动态地将站分配到时间槽的方法，当负载很低时，每个时间槽中的站点数量就多一些；当负载很高时，每个时间槽中的站点数量就少一点，甚至只有一个站。</p>
+<h4 id="自适应树遍历协议"><a href="#自适应树遍历协议" class="headerlink" title="自适应树遍历协议"></a>自适应树遍历协议</h4><p><img src="tree.png" alt="tree"></p>
+<p>该算法把站看作是二叉树的叶节点，该树所有的站允许获取信道。假设这8个站竞争的是0号槽，如果它们中的某一个获得了信道，则很好；如果发生了冲突，约定位置2号节点下的站才可以参与竞争1号槽，并且A-D站中一个获得信道发送了一帧，那1号槽就会保留给节点3下的E-H站；如果节点2下多个站都要传输数据也发生了冲突，那下一个槽即2号槽就由位于节点4下面的站来竞争；如果节点2下面的站在竞争1号槽时，发现它是空闲的，那说明冲突一定发生在节点3下，此时探测节点3毫无意义，可以跳过去直接探测节点6，当这次探测结果仍然是空时，节点7可以跳过去，尝试节点G。</p>
+<h3 id="无线局域网协议"><a href="#无线局域网协议" class="headerlink" title="无线局域网协议"></a>无线局域网协议</h3><p>每个无线电发射器有固定的传播范围，用一个圆形覆盖区域表示。<br>一个简单地想法是像之前的方案使用侦听机制：每个站侦听是否有其他站在传输，只有当没有站在传送数据时它才传输。但是因为无线的范围是有限的，这个方案会产生隐藏终端和暴露终端两个问题。举例：有A、B、C、D 四个无线站，带有多个发射图标的是发射站，其覆盖的范围是相邻的站。</p>
+<p><img src="wireless.png" alt="wireless"></p>
+<p><strong>隐藏终端问题(Hidden Station Problem)</strong>：如图a，A和C同时向B传输数据，如果A开始发送，然后C立即进行侦听，因为A在它的覆盖范围之外，它并不会听到A的传输，因此C错误地得出结论，它可以向B传输数据，结果就会在B出发送冲突，从而扰乱A发来的帧。 <strong>暴露终端问题(Exposed Station Problem)</strong>：如图b，B向A传输数据同时C想给D传输数据，如果C侦听介质，它会听到A的信道有数据在传输(并不知道具体传输双方对象)，从而错误地得出结论，它不能向D发送数据。<br>能处理无线LAN这些问题的一个有影响力的协议是 <strong>冲突避免多路访问(MACA, Multiple Access With Collosion Avoidance)</strong>。基本思想是：发送方给接收方一个RTS(Request To Send)帧，这个短帧包含了数据的长度，然后接收方用一个CTS(Clear To Send)作为应答，其他站只要侦听到其中一个帧，就必须保持沉默并等待随机时间。<br>MACA方案依旧解决不了暴露终端问题，能解决隐藏终端问题，不过A和C同时向B发送RTS帧时也会发生冲突，不成功的发送方将等待一点随机时候后重试。</p>
+<p>以上所有协议中谈到等待随机时间，一般使用的是 <strong>二进制指数后退</strong> 策略。基本思想是：一般在第<code>i</code>次冲突之后从<code>0~2^i-1</code>之间随机选择一个数，然后等待这么多个时间槽。比如第一次冲突发生后，每个站随机等待0个或1个时间槽，之后在重试发送；在第二次冲突后每个站随机选择0、1、2或3，然后等待这么多个时间槽；如果第三次冲突又发生了(发生的概率为0.25)，则下一次等待的时间槽从0到2^3-1之间随机选择，以此类推。最后到达10次冲突后，随机数的选择区间被固定在最大值1023，以后不再增加。在16次冲突之后，控制器放弃努力，并给计算机返回一个失败报告，进一步的恢复工作由高层协议完成。</p>
+<h2 id="MAC子层帧格式"><a href="#MAC子层帧格式" class="headerlink" title="MAC子层帧格式"></a>MAC子层帧格式</h2><p><img src="mac-frame.png" alt="mac-frame"></p>
+<p>首先是8个字节的 <strong>前导码(Preamle)</strong>，每个字节包含比特模式10101010，除了最后一个字节的最后2位是11，这最后一个字节称为802.3的帧起始定界符(Start of Frame, SOF)；<br>接下来是目标地址和源地址两个 <strong>MAC地址</strong> 字段，在Windows系统的dos窗口输入<code>ipconfig -all</code>可以很方便的查看本机的MAC地址，比如我的是<code>50-7B-9D-82-B5-C0</code>，它由12个十六进制数两两连在一起表示的，一共是6字节48位长。MAC地址具有全球唯一性，故也称为物理地址。前3个字段值由IEEE统一分配，指明网卡制造商，比如我的网卡根据50-7B-9D可查询到是LCFC联宝公司生产的，后3个字段由制造商自行分配来管理自己的产品流水号，并在设备出厂之前把完整的地址用程序编入网卡中。<br>接下来是以太网帧的 <strong>类型(Type)</strong> 字段或802.3的 <strong>长度(Length)</strong> 字段。以太网类型字段标识使用了哪种网络层协议，这样接收方的操作系统就知道把帧交给哪个进程去处理该数据包，例如值为0x0800的类型代码意味着帧内包含一个IPv4的数据包；802.3长度字段为了兼容性，规定任何值小于或等于0x600(1536)可解释为长度字段，任何大于0x600可解释为类型字段。<br>接下里是数据(Data)字段，最短为46字节，最长为1500字节。以太网有效帧从目标地址算起直到校验和(除数据和填充)称为标头一共固定是18字节，故有效帧最短为64字节，最长为1518字节。如果帧的数据部分少于46个字节，则使用填充(Pad)字段来填充该帧，使其达到最小长度要求。<br>最后一个字段是校验和(Checksum)，如32位的CRC差错检测码。</p>
+<h2 id="使用MAC地址在子网内实现通信"><a href="#使用MAC地址在子网内实现通信" class="headerlink" title="使用MAC地址在子网内实现通信"></a>使用MAC地址在子网内实现通信</h2><p>MAC主要解决的就是在一个子网内实现点到点的传输，所有今天遇到的拓扑结构都是多个主机电脑分别和交换机(网桥)连接组成的，交换机根据目的MAC地址将帧从一个接口转发到另一个接口。<br>传统的以太网中，在任意一个时刻网络中只能有一个站点发送数据，其他站点只可以接收信息，若想发送数据，只能退避等待。因此，共享式以太网的固定带宽被网络上所有站点共享，随机占用，网络中的站点越多，每个站点平均可以使用的带宽就越窄，网络的响应速度就越慢。交换机的出现解决了这个问题。在交换式局域网中，采用了交换机设备，只要发送数据的源节点和目的节点不冲突，那么数据发送就完全并行，这样大大提高了数据传送的速率。</p>
+<p><img src="switch.png" alt="switch"></p>
+<p>执行准确转发的简单方法是每个交换机配备一个大的哈希表(Hash Table)，该表列出每个可能的目的地址及它隶属的输出端口。例如交换机B1上的表将列出主机D属于端口4，这样只要有一个主机通过B1转发帧给主机D，B1只需把帧从端口4发出去就行，至于怎么走后续路径已经不是B1所关心的事情了。<br>当交换机被第一次接入网络是，所有的哈希表都是空的，这时交换机使用 <strong>广播(Broadcast)</strong> 策略：对于每个发现未知目标地址的帧，交换机将它转发到所有的端口(输入端口除外)。这时通过ARP协议(Address Resolution Protocol, 地址解析协议)，所有的主机取出数据包中的IP地址与自身的IP地址比较，如果相同做出回复向交换机报告自己的MAC地址，否则丢弃这个包；另外交换机本身会使用后向学习法，比如B1看到端口3上的一帧来自站C，那么它就知道通过端口3一定能到达C，因此它就在哈希表中构造一项，以后所有抵达B1要去C的帧都将被转发到端口3。这样一旦知道了一个目标地址，以后发给该地址的帧只被放到正确地端口，而不再广播到所有端口。<br>当打开、关闭或移动主机和交换时，网络的拓扑结构就会发生变化，为了解决这个问题，在构造哈希表时帧的到达时间也被记录更新在相应的表中，该时间值反映了交换机最后看到该机器发出一帧的时间。交换机中有一个进程会定时扫描哈希表，将时间值在几分钟前的表项都清除掉，这样如果一台计算机从LAN上拔下来、移动或几分钟内部发送任何数据，那么任何发送给它的流量又将会被广播。<br>一般情况下，查找和更新哈希表中的表项只需几微妙即可完成。交换机在转发中继帧时，可以重写MAC层的标头，这样可以搭建虚拟局域网。</p>
+<p><img src="different layer.png" alt="different layer"></p>
+<p>理论上单单依靠MAC地址，上海的网卡就可以找到洛杉矶的网卡了，技术上是可以实现的。但是，这样做有一个重大的缺点。以太网采用广播方式发送数据包，所有成员人手一”包”，不仅效率低，而且局限在发送者所在的子网络。也就是说，如果两台计算机不在同一个子网络，广播是传不过去的。这种设计是合理的，否则互联网上每一台计算机都会收到所有包，那会引起灾难。互联网是无数子网络共同组成的一个巨型网络，很像想象上海和洛杉矶的电脑会在同一个子网络，这几乎是不可能的。故MAC地址执行桥接功能，控制功能弱，没有路由选择功能。<br>解决主机A通过其所在的子网如何正确找到主机B所在子网，是通过IP地址转发数据，具有路由功能。理论上单单依靠IP地址也能实现上海的计算机可以找到洛杉矶的目标计算机，不过根据MAC地址转发数据，交换速度快，通过IP地址交换延迟高。从传输延迟的量级来看，如果MAC地址交换为几十微秒，则IP地址交换为几千微秒。<br>IP地址解决的是往哪走的问题，MAC地址解决的是怎么走的问题。两种地址之间没有任何联系，MAC地址是绑定在网卡上的，IP地址则是网管分配的，它们只是随机组合在一起。不过在整个互联网协议中相辅相成，完成源机器找到目标机器传输数据包。</p>
+<h3 id="虚拟局域网-VLAN-Virtual-LAN"><a href="#虚拟局域网-VLAN-Virtual-LAN" class="headerlink" title="虚拟局域网(VLAN, Virtual LAN)"></a>虚拟局域网(VLAN, Virtual LAN)</h3><p>在实际生活中，物理拓扑结构搭建的局域网往往不能满足所有的需求，对于结构组织总是在不停地变化的公司来说，用软件方式分离成几个逻辑拓扑结构的方案是很有必要的。网管首先要确定共有多少个VLAN、哪些计算机位于哪个VLAN、每个VLAN叫什么名称。通常VLAN用颜色来命名。</p>
+<p><img src="VLAN.png" alt="VLAN"></p>
+<p>刚开始交换机的配置表时空的，灰色主机发送的数据帧只会被广播给标记为G的主机。比如交换机B2到交换机B1的端口没有被标记W，意味着白色主机上帧不会从B2转发到B1，因为实际上也没有白色VLAN上的机器被连接到B1。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>MAC层作为数据链路层的一个子层，采用广播的方式传输数据帧，主要任务是：有效解决多个数据帧同时竞争信道的冲突问题，最大化的提高信道利用成功率和减少延迟；在子网内根据MAC地址将帧从一个主机转发到另一个主机。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="郭冬冬 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="郭冬冬 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Network/" rel="tag"># Network</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/04/一些有趣的定律或效应/" rel="next" title="一些有趣的定律或效应">
+                <i class="fa fa-chevron-left"></i> 一些有趣的定律或效应
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/07/网络协议-网络层(Network Layer)/" rel="prev" title="网络协议-网络层(Network Layer)">
+                网络协议-网络层(Network Layer) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="郭冬冬" />
+            
+              <p class="site-author-name" itemprop="name">郭冬冬</p>
+              <p class="site-description motion-element" itemprop="description">技术总结和生活感想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/gordon0518" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guodongdong0518@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="gordon0518.github.io" target="_blank" title="Hexo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Hexo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.jianshu.com/u/0a500b9f1fe1" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#多路访问协议"><span class="nav-number">1.</span> <span class="nav-text">多路访问协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ALOHA协议"><span class="nav-number">1.1.</span> <span class="nav-text">ALOHA协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#纯ALOHA"><span class="nav-number">1.1.1.</span> <span class="nav-text">纯ALOHA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分槽ALOHA"><span class="nav-number">1.1.2.</span> <span class="nav-text">分槽ALOHA</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#载波侦听协议-Carrier-Sense-Protocol"><span class="nav-number">1.2.</span> <span class="nav-text">载波侦听协议(Carrier Sense Protocol)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-坚持"><span class="nav-number">1.2.1.</span> <span class="nav-text">1-坚持</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非坚持"><span class="nav-number">1.2.2.</span> <span class="nav-text">非坚持</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#p-坚持"><span class="nav-number">1.2.3.</span> <span class="nav-text">p-坚持</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无冲突协议"><span class="nav-number">1.3.</span> <span class="nav-text">无冲突协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#位图协议-Bitmap"><span class="nav-number">1.3.1.</span> <span class="nav-text">位图协议(Bitmap)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#令牌传递-Token"><span class="nav-number">1.3.2.</span> <span class="nav-text">令牌传递(Token)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二进制倒计数-Binary-Countdown"><span class="nav-number">1.3.3.</span> <span class="nav-text">二进制倒计数(Binary Countdown)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有限竞争协议-Limited-Contention-Protocol"><span class="nav-number">1.4.</span> <span class="nav-text">有限竞争协议(Limited-Contention Protocol)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自适应树遍历协议"><span class="nav-number">1.4.1.</span> <span class="nav-text">自适应树遍历协议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无线局域网协议"><span class="nav-number">1.5.</span> <span class="nav-text">无线局域网协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAC子层帧格式"><span class="nav-number">2.</span> <span class="nav-text">MAC子层帧格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用MAC地址在子网内实现通信"><span class="nav-number">3.</span> <span class="nav-text">使用MAC地址在子网内实现通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟局域网-VLAN-Virtual-LAN"><span class="nav-number">3.1.</span> <span class="nav-text">虚拟局域网(VLAN, Virtual LAN)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郭冬冬</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://gordon0518.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2017/12/12/网络协议-MAC层/';
+          this.page.identifier = '2017/12/12/网络协议-MAC层/';
+          this.page.title = '网络协议-MAC层';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://gordon0518.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("E7BCmqy3B7tkhoIeockPTGU5-gzGzoHsz", "i20gUVUGAk8kUCt4N4hG7ghd");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

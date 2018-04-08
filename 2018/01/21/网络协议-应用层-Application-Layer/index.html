@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Network," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="应用程序收到”传输层”的数据，接下来就要进行解读。由于互联网是开放架构，数据来源五花八门，必须事先规定好格式，否则根本无法解读。“应用层”的作用，就是规定应用程序的数据格式。举例来说，TCP协议可以为各种各样的程序传递数据，比如Email、WWW、FTP等等。那么，必须有不同协议规定电子邮件、网页、FTP数据的格式，这些应用程序协议就构成了”应用层”。这是最高的一层，直接面对用户。">
+<meta name="keywords" content="Network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络协议-应用层(Application Layer)">
+<meta property="og:url" content="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/index.html">
+<meta property="og:site_name" content="Gordong">
+<meta property="og:description" content="应用程序收到”传输层”的数据，接下来就要进行解读。由于互联网是开放架构，数据来源五花八门，必须事先规定好格式，否则根本无法解读。“应用层”的作用，就是规定应用程序的数据格式。举例来说，TCP协议可以为各种各样的程序传递数据，比如Email、WWW、FTP等等。那么，必须有不同协议规定电子邮件、网页、FTP数据的格式，这些应用程序协议就构成了”应用层”。这是最高的一层，直接面对用户。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/hosts.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/Email.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/MIME.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/Content-Type.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/reponse.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/Cookie.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/script.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/AJAX.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/CDN.png">
+<meta property="og:updated_time" content="2018-01-21T15:25:00.332Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络协议-应用层(Application Layer)">
+<meta name="twitter:description" content="应用程序收到”传输层”的数据，接下来就要进行解读。由于互联网是开放架构，数据来源五花八门，必须事先规定好格式，否则根本无法解读。“应用层”的作用，就是规定应用程序的数据格式。举例来说，TCP协议可以为各种各样的程序传递数据，比如Email、WWW、FTP等等。那么，必须有不同协议规定电子邮件、网页、FTP数据的格式，这些应用程序协议就构成了”应用层”。这是最高的一层，直接面对用户。">
+<meta name="twitter:image" content="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/hosts.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/"/>
+
+
+
+
+
+  <title>网络协议-应用层(Application Layer) | Gordong</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?95ac7d2cf2ac052e787d934c29dac40e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gordong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">GuoDongDong's Personal Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郭冬冬">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gordong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">网络协议-应用层(Application Layer)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-21T23:24:00+08:00">
+                2018-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Network/" itemprop="url" rel="index">
+                    <span itemprop="name">Network</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/21/网络协议-应用层-Application-Layer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/21/网络协议-应用层-Application-Layer/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/21/网络协议-应用层-Application-Layer/" class="leancloud_visitors" data-flag-title="网络协议-应用层(Application Layer)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>应用程序收到”传输层”的数据，接下来就要进行解读。由于互联网是开放架构，数据来源五花八门，必须事先规定好格式，否则根本无法解读。<br>“应用层”的作用，就是规定应用程序的数据格式。<br>举例来说，TCP协议可以为各种各样的程序传递数据，比如Email、WWW、FTP等等。那么，必须有不同协议规定电子邮件、网页、FTP数据的格式，这些应用程序协议就构成了”应用层”。<br>这是最高的一层，直接面对用户。<br><a id="more"></a></p>
+<h2 id="一、DNS-Domain-Name-System-域名系统"><a href="#一、DNS-Domain-Name-System-域名系统" class="headerlink" title="一、DNS(Domain Name System, 域名系统)"></a>一、DNS(Domain Name System, 域名系统)</h2><p>因特网上作为域名和IP地址相互映射的一个分布式数据库，通过域名得到对应的IP地址的过程叫做域名解析。DNS协议运行在UDP协议之上，使用端口号53。</p>
+<p>域名到IP地址的映射有两种方式：</p>
+<ol>
+<li>静态映射，每台设备上都配置主机到IP地址的映射，各设备独立维护自己的映射表，而且只供本设备使用(如Windows系统hosts文件)；<img src="hosts.png" alt="hosts"></li>
+<li>动态映射，建立一套域名解析系统（DNS），只在专门的DNS服务器上配置主机到IP地址的映射，网络上需要使用主机名通信的设备，首先需要到DNS服务器查询主机所对应的IP地址。</li>
+</ol>
+<p>在解析域名时，可以首先采用静态域名解析的方法，如果静态域名解析不成功，再采用动态域名解析的方法。可以将一些常用的域名放入静态域名解析表中，这样可以大大提高域名解析效率。</p>
+<p>DNS冗余：为保证服务的高可用性，DNS要求使用多台名称服务器冗余支持每个区域。同一个区域中，有一台 <strong>主DNS服务器</strong> 和多个 <strong>辅DNS服务器</strong>，辅DNS服务器用作备份，以防主服务器无法访问或宕机。辅DNS服务器定期与主DNS服务器通讯，确保它的区域信息保持最新，如果不是最新信息，辅DNS服务器就会从主服务器获取最新区域数据文件的副本。</p>
+<h2 id="二、Email"><a href="#二、Email" class="headerlink" title="二、Email"></a>二、Email</h2><p>因为用户电脑性能的限制，无法运行收发邮件的程序，并且无法不间断地运行并连接到互联网上，故在邮件是通过邮件服务器来真正传输的。</p>
+<p><img src="Email.png" alt="Email"></p>
+<p><strong>用户代理(user agent)</strong> 就是我们常见的邮件客户端，<strong>邮件传输代理(message transfer agent)</strong> 非正式地称为邮件服务器。<br>邮件服务器之间的 <strong>SMTP(Simple Mail Transfer Protocal, 简单邮件传输协议)</strong> 协议使用TCP连接，可以保证邮件准确无误地在邮件服务器之间传输。</p>
+<h3 id="2-1-邮件格式"><a href="#2-1-邮件格式" class="headerlink" title="2.1 邮件格式"></a>2.1 邮件格式</h3><p><em>RFC 5322</em>：在Email初期，除了必须的主题和收件人，内容只能发送 ASCII 文本消息。<br><em>MIME(Multipurpose Internet Mail Extensions, 多用途Internet邮件扩展)</em>：随着Internet在全球范围得到广泛使用，满足不了使用其他语言撰写的邮件(如中文和日文)以及完全不包含文本的邮件(如图片、视频或程序)。这也是我们现在所使用的邮件格式。</p>
+<p><img src="MIME.png" alt="MIME"></p>
+<p>在<code>Content-Type</code>字段中描述文件类型。</p>
+<p><img src="Content-Type.png" alt="Content-Type"></p>
+<h3 id="2-2-交互协议"><a href="#2-2-交互协议" class="headerlink" title="2.2 交互协议"></a>2.2 交互协议</h3><p>邮件服务器之间使用 SMTP 协议来传输邮件，在邮箱客户端和邮件服务器之间也需要商定一种协议。<br><em>POP3(Post Office Protocal<version 3="">, 邮局协议版本3)</version></em>：这是最初的交付协议，功能简单，不太安全。它通常把投建下账到用户计算机上，而不是留在服务器上，虽然减少了服务器的压力，但不能同步邮件，并且一旦删除邮件或计算机发生故障，所有的电子有限将可能永久丢失。<br><em>IMAP(Internet Message Access Protocal, Internet邮件访问协议)</em>：它是POP3的升级版，功能丰富，并有安全机制。为了使用IMAP，邮件服务器必须运行IMAP服务器，它负责监听端口143，同时用户代理必须运行IMAP客户端，邮件默认是在IMAP服务器存放着，用户代理可以选择下载邮件或直接查看，这样就实现了同步的功能。<br><em>Webmail</em>：让每个用户都下载一个邮件客户端还是有些麻烦的，目前流行的提供电子邮件服务的是Webmail，利用Web为用户提供邮件服务。选择广泛使用的Webmail系统包括 Google Gmail、MS Outlook和Yahoo Mail等。</p>
+<h2 id="三、HTTP-HyperText-Transfer-Protocal-超文本传输协议"><a href="#三、HTTP-HyperText-Transfer-Protocal-超文本传输协议" class="headerlink" title="三、HTTP(HyperText Transfer Protocal, 超文本传输协议)"></a>三、HTTP(HyperText Transfer Protocal, 超文本传输协议)</h2><p>如果想在网上冲浪，我们就必须打开浏览器输入对应网站的 <strong>URL(Uniform Resource Locator, 统一资源定位符)</strong>。用户请求和看到的页面使用的是 <strong>HTML(HyperText Markup Language, 超文本标记语言)</strong>，使用的浏览器就是一个HTML解释器，称为Web客户端，它来代理用户通过HTTP协议和Web服务器进行交互，浏览器会与服务器的端口80建立一个TCP连接。<br>现在我们使用的浏览器能解释常见的文件类型，为了能解释快速增长的陌生文件类型，它会读取页面里的MIME类型，安装 <strong>插件(plug-in)</strong> 或 <strong>辅助应用程序(helper application)</strong>。为了使浏览器调用对应的插件，所有的插件必须实现该浏览器的一组过程程序；而辅助应用程序是一些独立于浏览器而存在的大型程序。<br>HTTP请求时一般常见的两种方法是GET和POST。GET方法通过URL传输明文参数，常用于搜索信息时；POST方法通过报文传输密文数据，常用于表单提交。<br>每个请求都会得到一个包含3个数字状态码和附加信息的响应消息。这个响应状态码分为5大组。</p>
+<p><img src="reponse.png" alt="reponse"></p>
+<h3 id="3-1-Cookie"><a href="#3-1-Cookie" class="headerlink" title="3.1 Cookie"></a>3.1 Cookie</h3><p>浏览大多数网站时，浏览器和Web服务器之间使用 Session会话 模式，这样完成一次交互，用户下次请求时，服务器就完全分辨不出这个用户是谁，每次都当做新用户来看待。这对于用户购物的电子商务网站或个性化定制门户网站是不能接受的。<br>解决方案是采用了称为 <em>小甜饼Cookie</em> 的技术，它是一小段文本信息(最多4KB)，伴随着用户请求页面在服务器和浏览器之间传递。这个名称来自于很早以前的程序员行话，即程序调用一个过程并得到一些信息，这些信息稍后再完成某些工作时可能需要用的到。<br>当用户请求一个Web页面时，服务器除了提供所请求的页面以外，还以Cookie的形式提供了一些附加信息。浏览器把服务器提供的Cookie通常存储在硬盘对应Cookie目录下一段时间，这样在整个浏览器调用期间一直坚持Coookie，除非用户禁用Cookie。因为Cookie只是字符串不是可执行程序，所以即使一个Cookie包含病毒也只能被当作数据处理，因而不存在病毒得以实际运行从而造成损害的正式途径。所以你会发现清除浏览器的缓存后(包括Cookie)，某些用户的个人设置恢复成了默认设置。<br>一个Cookie至多5个字段。</p>
+<p><img src="Cookie.png" alt="Cookie"></p>
+<p>以图片中第2行举例：顾客浏览 jills-store.com，当单击一件物品时，服务器将该物品放入该用户的购物车(由服务器Session维护)，同时创建一个包含商品数量和产品代码的Cookie，并把它发送给客户。每当顾客点击一个新商品，该Cookie随着该新页面的请求被返回到服务器端，服务器会将它们追加到Cookie中。最后该顾客进行结账时，这个Cookie就包含了想购买商品的完整列表，它和当前的请求一起发送给服务器。<br>利用Cookie，服务器很容易地就能跟踪用户的活动。</p>
+<h3 id="3-2-动态Web页面"><a href="#3-2-动态Web页面" class="headerlink" title="3.2 动态Web页面"></a>3.2 动态Web页面</h3><p>如今静态页面已经不能满足日益增长的需求，为了处理动态页面，Web服务端采用 <em>CGI(Common Gateway Interface, 公共网关接口)</em> 和 <em>内嵌的脚本(PHP,JSP,ASP)</em>。<br>CGI提供了允许Web服务器和脚本通信的接口，这些脚本接受输入请求并生成HTML页面作为响应。对应的脚本语言有<code>Python</code>、<code>Ruby</code>和<code>Perl</code>等。 通过CGI调用的程序常驻在<code>cgi-bin</code>的目录下，该目录在URL中可以看到，服务器将一个请求映射到这个目录下的脚本并运行，该脚本处理数据并返回一个给浏览器的网页。<br>第二种方式是在HTML页面中嵌入少量脚本，然后服务器执行这些脚本并生成最终发送给客户的页面。编写这些脚本的一种流行语言是 <em>PHP(HyperText Preprocessor, 超文本预处理器)</em>，为了使用PHP，服务器必须能够理解PHP，就好像浏览器必须理解CSS才可以解释具有样式表的Web页面一样，通常服务器用文件扩展名php来标识包含PHP的Web页面，而不是用html。</p>
+<p>而最流行的客户端脚本语言是 <em>JavaScript</em>。PHP和JavaScript都是嵌入在HTML文件中的代码，但它们的处理方式完全不同，PHP脚本是由服务器解释的，JavaScript脚本是浏览器解释的。</p>
+<p><img src="script.png" alt="script"></p>
+<p>另外还可以在客户端执行的是 <em>Applet</em> 和 <em>ActiveX</em>。Applet就是Java小程序，被具有JVM能力的浏览器解释执行；ActiveX是一种被编译成x86机器指令的程序，可以直接在硬件逻辑上执行，故这种控件执行速度很快。所有浏览器都可以解释Java程序和JavaScript，故JavaScript和Applet的跨平台移植性好；JavaScript容易编写，Applet执行更快一点，ActiveX控件运行速度最快。</p>
+<p><strong>AJAX(Asynchronous JAvascript and Xml, 异步JavaScript和XML)</strong>：为了使用户无感地进行浏览器和Web服务器的交互，几种关键技术的组合称为AJAX。许多Web应用如Google的Gmail、地图和文档都是以AJAX编写的。<br>AJAX不是一种语言，是一组需要一起协同工作的技术：</p>
+<ol>
+<li>直观展示页面的HTML和CSS；</li>
+<li>改变页面结构的DOM(Document Object Model, 文档对象模型)。DOM可以表示结构化成一棵反映HTML元素的树，有根与叶、父节点和子节点等。DOM模型的意义在于它可以改变部分页面内容，没有必要重写整个页面，只有包含了需要改变内容的树节点才对页面内容进行替换。<img src="AJAX.png" alt="AJAX"></li>
+<li>浏览器和服务器传输数据的XML(eXtensible Markup Language)。XML相对于HTML更注重数据的表示，目前更流行的表示数据的结构语言有JSON和YAML。</li>
+<li>发送和检索XML数据的异步HTTP通信；</li>
+<li>将上述功能组合在一起的JavaScript；</li>
+</ol>
+<h2 id="四、内容分发"><a href="#四、内容分发" class="headerlink" title="四、内容分发"></a>四、内容分发</h2><h3 id="4-1-CDN-Content-Distribution-Network-内容分发网络"><a href="#4-1-CDN-Content-Distribution-Network-内容分发网络" class="headerlink" title="4.1 CDN(Content Distribution Network, 内容分发网络)"></a>4.1 CDN(Content Distribution Network, 内容分发网络)</h3><p>在国内访问Google美国服务器肯定不如肉身翻墙在USA访问快。Google为了很好的实现全球化，解决因物理距离导致的访问延迟，就需要在亚洲也设置服务器，如果你使用VPN上Google的话，请求默认会请求到香港或日本的服务器。</p>
+<p><img src="CDN.png" alt="CDN"></p>
+<p>一般在下载大型文件的场景中，使用 <em>镜像(mirror)</em>，不同网络区域中CDN节点成为镜像点。这种设计让用户手动选择一个附近的镜像点来下载内容。<br>而在浏览网页时，大多数全球网站使用 <em>DNS镜像(DNS redirection)</em>。比如所有的用户在浏览器输入相同的<a href="http://www.cdn.com的URL时，DNS会根据用户位置把该域名解析为里用户最近的IP地址，这样不同地区的用户输入了同样的URL却请求的是不同的Web服务器。" target="_blank" rel="noopener">www.cdn.com的URL时，DNS会根据用户位置把该域名解析为里用户最近的IP地址，这样不同地区的用户输入了同样的URL却请求的是不同的Web服务器。</a></p>
+<h3 id="4-2-P2P-Peer-to-Peer-对等网络"><a href="#4-2-P2P-Peer-to-Peer-对等网络" class="headerlink" title="4.2 P2P(Peer-to-Peer, 对等网络)"></a>4.2 P2P(Peer-to-Peer, 对等网络)</h3><p>当然并不是所有的个人或组织都有资源搭建或租赁CDN服务器，这时就可以使用P2P。基本思想是将多台计算机连在一起并将资源集中起来形成一个内容分发系统，彼此相互服务提供内容，无须单独配置服务器或任何中央控制节点。</p>
+<p>参考链接：《计算机网络（第5版）》 AndrewS．Tanenbaum<br><a href="http://www.ruanyifeng.com/blog/2017/06/tcp-protocol.html" target="_blank" rel="noopener">TCP 协议简介</a><br><a href="http://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html" target="_blank" rel="noopener">互联网协议入门（一）</a><br><a href="http://www.ruanyifeng.com/blog/2012/06/internet_protocol_suite_part_ii.html" target="_blank" rel="noopener">互联网协议入门（二）</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="郭冬冬 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="郭冬冬 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Network/" rel="tag"># Network</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/14/网络协议-传输层-Transfer-Layer/" rel="next" title="网络协议-传输层(Transfer Layer)">
+                <i class="fa fa-chevron-left"></i> 网络协议-传输层(Transfer Layer)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/21/加减密和数字签名/" rel="prev" title="加减密和数字签名">
+                加减密和数字签名 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="郭冬冬" />
+            
+              <p class="site-author-name" itemprop="name">郭冬冬</p>
+              <p class="site-description motion-element" itemprop="description">技术总结和生活感想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/gordon0518" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guodongdong0518@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="gordon0518.github.io" target="_blank" title="Hexo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Hexo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.jianshu.com/u/0a500b9f1fe1" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、DNS-Domain-Name-System-域名系统"><span class="nav-number">1.</span> <span class="nav-text">一、DNS(Domain Name System, 域名系统)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Email"><span class="nav-number">2.</span> <span class="nav-text">二、Email</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-邮件格式"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 邮件格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-交互协议"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 交互协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、HTTP-HyperText-Transfer-Protocal-超文本传输协议"><span class="nav-number">3.</span> <span class="nav-text">三、HTTP(HyperText Transfer Protocal, 超文本传输协议)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Cookie"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 Cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-动态Web页面"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 动态Web页面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、内容分发"><span class="nav-number">4.</span> <span class="nav-text">四、内容分发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-CDN-Content-Distribution-Network-内容分发网络"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 CDN(Content Distribution Network, 内容分发网络)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-P2P-Peer-to-Peer-对等网络"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 P2P(Peer-to-Peer, 对等网络)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郭冬冬</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://gordon0518.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/01/21/网络协议-应用层-Application-Layer/';
+          this.page.identifier = '2018/01/21/网络协议-应用层-Application-Layer/';
+          this.page.title = '网络协议-应用层(Application Layer)';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://gordon0518.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("E7BCmqy3B7tkhoIeockPTGU5-gzGzoHsz", "i20gUVUGAk8kUCt4N4hG7ghd");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

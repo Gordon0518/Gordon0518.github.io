@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vsftpd,Centos7,LAMP,WordPress," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="安装配置LAMP环境，即Linux+Apache+MySQL+PHP+phpmyadmin。LNMP分别代表 Linux、Nginx、MySQL、PHP。大同小异。 基本知识准备 查询是否已安装对应软件: $ rpm -q &amp;lt;software&amp;gt; or yum info &amp;lt;software&amp;gt;。 软件安装后，服务是否启动:systemctl命令(system Control)1">
+<meta name="keywords" content="vsftpd,Centos7,LAMP,WordPress">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS7安装部署LAMP、WordPress和FTP">
+<meta property="og:url" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/index.html">
+<meta property="og:site_name" content="Gordong">
+<meta property="og:description" content="安装配置LAMP环境，即Linux+Apache+MySQL+PHP+phpmyadmin。LNMP分别代表 Linux、Nginx、MySQL、PHP。大同小异。 基本知识准备 查询是否已安装对应软件: $ rpm -q &amp;lt;software&amp;gt; or yum info &amp;lt;software&amp;gt;。 软件安装后，服务是否启动:systemctl命令(system Control)1">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/test-apache.png">
+<meta property="og:image" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/secure-rule.png">
+<meta property="og:image" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/secure-group.png">
+<meta property="og:image" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/php-welcome.png">
+<meta property="og:image" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/phpMyAdmin.png">
+<meta property="og:image" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/wordpress.png">
+<meta property="og:image" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/config.png">
+<meta property="og:image" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/config-error.png">
+<meta property="og:image" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/localhost.png">
+<meta property="og:image" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/privilege.png">
+<meta property="og:updated_time" content="2017-09-01T14:52:44.458Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CentOS7安装部署LAMP、WordPress和FTP">
+<meta name="twitter:description" content="安装配置LAMP环境，即Linux+Apache+MySQL+PHP+phpmyadmin。LNMP分别代表 Linux、Nginx、MySQL、PHP。大同小异。 基本知识准备 查询是否已安装对应软件: $ rpm -q &amp;lt;software&amp;gt; or yum info &amp;lt;software&amp;gt;。 软件安装后，服务是否启动:systemctl命令(system Control)1">
+<meta name="twitter:image" content="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/test-apache.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/"/>
+
+
+
+
+
+  <title>CentOS7安装部署LAMP、WordPress和FTP | Gordong</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?95ac7d2cf2ac052e787d934c29dac40e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gordong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">GuoDongDong's Personal Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郭冬冬">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gordong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CentOS7安装部署LAMP、WordPress和FTP</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-29T22:11:00+08:00">
+                2017-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/博客搭建/" itemprop="url" rel="index">
+                    <span itemprop="name">博客搭建</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/" class="leancloud_visitors" data-flag-title="CentOS7安装部署LAMP、WordPress和FTP">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>安装配置LAMP环境，即Linux+Apache+MySQL+PHP+phpmyadmin。LNMP分别代表 Linux、Nginx、MySQL、PHP。大同小异。</p>
+<h2 id="基本知识准备"><a href="#基本知识准备" class="headerlink" title="基本知识准备"></a>基本知识准备</h2><ul>
+<li>查询是否已安装对应软件: <code>$ rpm -q &lt;software&gt;</code> or <code>yum info &lt;software&gt;</code>。</li>
+<li>软件安装后，服务是否启动:systemctl命令(system Control)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">systemctl status &lt;software&gt;[.service]    //查看service状态</span><br><span class="line">systemctl start &lt;software&gt;[.service]     //启动service</span><br><span class="line">systemctl enable &lt;software&gt;[.service]    //开机启动service</span><br><span class="line">systemctl stop &lt;software&gt;[.service]      //停止service</span><br><span class="line">systemctl restart &lt;software&gt;[.service]   //重启service</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>.service不加，系统也会在env PATH中根据 software name 调用正确的service。<br><a id="more"></a></p>
+<h2 id="安装Apache"><a href="#安装Apache" class="headerlink" title="安装Apache"></a>安装Apache</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install httpd    //-y(yes)静默安装</span><br></pre></td></tr></table></figure>
+<p>安装成功后，执行command<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl status httpd    //Apache service激活状态默认是inactive (dead)</span><br><span class="line">systemctl start httpd</span><br><span class="line">systemctl enable httpd</span><br><span class="line">systemctl status httpd    //启动后再查看Active: active (running)</span><br></pre></td></tr></table></figure></p>
+<p>然后在浏览器输入服务器公网IP或localhost(本机)，就应该能看到Apache HTTP server的test页面了。<br><img src="test-apache.png" alt="Apache HTTP server test page"></p>
+<h3 id="Exception异常处理"><a href="#Exception异常处理" class="headerlink" title="Exception异常处理"></a>Exception异常处理</h3><p>以阿里云为例，如果出现服务器配置启动Apache后无法访问，使用本机去ping公网ip还可以ping通的case，是因为访问Apache服务被拦截了。可能是这两个原因导致的:</p>
+<ul>
+<li><p>阿里云ECS实例的安全组规则没有设置对应的端口权限。进入<code>云服务器-实例-管理-本实例安全组-配置规则-添加安全组规则</code>，在入方向添加80端口，授权对象0.0.0.0/0指所有请求。<br><img src="secure-rule.png" alt="secure rule"><br>这里也顺便加上几个通用的端口，以防后面的操作出现访问请求被拦截的情况。<br><img src="secure-group.png" alt="secure group"></p>
+</li>
+<li><p>系统中的防火墙在运行状态，并未开放相应的端口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status firewalld    //如果防火墙是inactive (dead)未激活状态，就不会拦截任何端口，也可以保持这个状态</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如果防火墙是active (running)运行状态，在防火墙中开放80端口，将 http 服务加入防火墙以允许外部访问<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --add-service=http --permanent    //–permanent参数表示这是一条永久防火墙规则，如果不加则重启系统后就没有这条规则了</span><br></pre></td></tr></table></figure></p>
+<p>对于自定义的端口（如81），也需要添加防火墙规则<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=81/tcp --permanent</span><br></pre></td></tr></table></figure></p>
+<p>重启 Firewalld 使该规则生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart firewalld</span><br></pre></td></tr></table></figure></p>
+<p>关闭SELINUX，<code>vim /etc/selinux/config</code>，注释掉如下两句，添加最后一项<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#SELINUX=enforcing #注释掉</span><br><span class="line">#SELINUXTYPE=targeted #注释掉</span><br><span class="line">SELINUX=disabled #增加</span><br></pre></td></tr></table></figure></p>
+<p><code>:wq!</code> 保存退出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setenforce 0 #使配置立即生效</span><br></pre></td></tr></table></figure>
+<h2 id="安装MariaDB-MySQL的一个开源分支"><a href="#安装MariaDB-MySQL的一个开源分支" class="headerlink" title="安装MariaDB (MySQL的一个开源分支)"></a>安装MariaDB (MySQL的一个开源分支)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install mariadb mariadb-server</span><br></pre></td></tr></table></figure>
+<p>MariaDB安装成功后，启动MariaDB<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mariadb     //启动MariaDB</span><br><span class="line">systemctl enable mariadb    //设置开机启动</span><br></pre></td></tr></table></figure></p>
+<p>设置MySQL root账户密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure></p>
+<p>因是刚安装好，root密码未设置，看到下面这行直接回车即可，输Y开始设置root密码</p>
+<blockquote>
+<p>Enter current password for root (enter for none):<br>Set root password? [Y/n]</p>
+</blockquote>
+<p>提示输入新密码和重复输入新密码，重复输入两次后，出现更新密码成功提示，然后一路输入y/Y就可以。</p>
+<blockquote>
+<p>New password:<br>Re-enter new password:<br>Password updated successfully!</p>
+</blockquote>
+<blockquote>
+<p>Remove anonymous users? [Y/n] Y<br>Disallow root login remotely? [Y/n] Y<br>Remove test database and access to it? [Y/n] Y<br>Reload privilege tables now? [Y/n] Y<br>Thanks for using MariaDB!</p>
+</blockquote>
+<p>设置root密码后，重启MariaDB生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart mariadb</span><br></pre></td></tr></table></figure></p>
+<p>测试访问数据库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure></p>
+<p>然后输入密码,登录成功后显示如下：</p>
+<blockquote>
+<p>Welcome to the MariaDB monitor.  Commands end with ; or \g.<br>Your MariaDB connection id is 2<br>Server version: 5.5.52-MariaDB MariaDB Server</p>
+</blockquote>
+<p>Copyright (c) 2000, 2016, Oracle, MariaDB Corporation Ab and others.</p>
+<p>Type ‘help;’ or ‘\h’ for help. Type ‘\c’ to clear the current input statement.</p>
+<p>MariaDB [(none)]&gt;</p>
+<p>查看数据库服务器的数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show databases;</span><br></pre></td></tr></table></figure></p>
+<p>最后输入<code>exit;</code>退出数据库</p>
+<h2 id="安装PHP以及PHP拓展"><a href="#安装PHP以及PHP拓展" class="headerlink" title="安装PHP以及PHP拓展"></a>安装PHP以及PHP拓展</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install php php-mysql php-gd libjpeg* php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-bcmath php-mhash</span><br></pre></td></tr></table></figure>
+<p>安装完成后，重启Apache服务器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart httpd</span><br></pre></td></tr></table></figure></p>
+<p>在/www/html/目录新增index文件(查看Apache相关的配置在/etc/httpd/conf/httpd.conf里)，测试PHP安装结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /var/www/html/index.php    // /www/html/为Apache服务器默认项目部署根路径</span><br></pre></td></tr></table></figure></p>
+<p><code>i</code> insert输入如下内容，<code>Esc</code>退出编辑，<code>:wq</code>保存退出。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">  phpinfo();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></p>
+<p>在浏览器中输入服务器地址，查看是否可以看到：<br><img src="php-welcome.png" alt="PHP欢迎页"></p>
+<h2 id="安装phpMyAdmin"><a href="#安装phpMyAdmin" class="headerlink" title="安装phpMyAdmin"></a>安装phpMyAdmin</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install phpmyadmin php-mcrypt</span><br></pre></td></tr></table></figure>
+<p>phpMyAdmin 的默认安装目录是 /usr/share/phpMyAdmin，同时会在 Apache 的配置文件目录中自动创建虚拟主机配置文件 /etc/httpd/conf.d/phpMyAdmin.conf（区分大小写）。默认情况下，CentOS 7上的phpMyAdmin只允许从回环地址(127.0.0.1)访问。为了能远程连接，需要改动它的配置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd/conf.d/phpMyAdmin.conf</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory /usr/share/phpMyAdmin/&gt;</span><br><span class="line">   AddDefaultCharset UTF-8</span><br><span class="line"></span><br><span class="line">   &lt;IfModule mod_authz_core.c&gt;</span><br><span class="line">     # Apache 2.4</span><br><span class="line">     &lt;RequireAny&gt;</span><br><span class="line">      # Require ip 127.0.0.1	#注释掉</span><br><span class="line">      # Require ip ::1			#注释掉</span><br><span class="line">        Require all granted		#新添加</span><br><span class="line">     &lt;/RequireAny&gt;</span><br><span class="line">   &lt;/IfModule&gt;</span><br><span class="line">   &lt;IfModule !mod_authz_core.c&gt;</span><br><span class="line">     # Apache 2.2</span><br><span class="line">     Order Deny,Allow</span><br><span class="line">     Deny from All</span><br><span class="line">     Allow from 127.0.0.1</span><br><span class="line">     Allow from ::1</span><br><span class="line">   &lt;/IfModule&gt;</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line">&lt;Directory /usr/share/phpMyAdmin/setup/&gt;</span><br><span class="line">   &lt;IfModule mod_authz_core.c&gt;</span><br><span class="line">     # Apache 2.4</span><br><span class="line">     &lt;RequireAny&gt;</span><br><span class="line">      # Require ip 127.0.0.1	#注释掉</span><br><span class="line">      # Require ip ::1			#注释掉</span><br><span class="line">        Require all granted		#新添加</span><br><span class="line">     &lt;/RequireAny&gt;</span><br><span class="line">   &lt;/IfModule&gt;</span><br><span class="line">   &lt;IfModule !mod_authz_core.c&gt;</span><br><span class="line">     # Apache 2.2</span><br><span class="line">     Order Deny,Allow</span><br><span class="line">     Deny from All</span><br><span class="line">     Allow from 127.0.0.1</span><br><span class="line">     Allow from ::1</span><br><span class="line">   &lt;/IfModule&gt;</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+<p>重启Apache服务器，<code>systemctl restart httpd</code><br>然后通过浏览器访问http://服务器ip地址/phpmyadmin<br><img src="phpMyAdmin.png" alt="phpMyAdmin"></p>
+<p><a href="http://www.jianshu.com/p/bc14ff0ab1c7" target="_blank" rel="noopener">参考链接</a></p>
+<h2 id="安装WordPress"><a href="#安装WordPress" class="headerlink" title="安装WordPress"></a>安装WordPress</h2><p>如果你刚好打算以WordPress作为博客服务器，这个module刚好适合你。</p>
+<p>通过命令下载WordPress，切换到任意目录下，一般源文件放在<code>/usr/local/src</code>，个人安装软件在<code>/usr/local</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/src</span><br><span class="line">wget https://wordpress.org/latest.tar.gz    //English version,目前最新版是4.8.1</span><br><span class="line">wget https://cn.wordpress.org/wordpress-4.8.1-zh_CN.tar.gz    //简体中文(zh-Hans)</span><br></pre></td></tr></table></figure></p>
+<p>或者你先下载到本机，再通过FTP把压缩包上传到Linux 实例中。</p>
+<p>在Apache项目部署跟目录解压缩wordpress<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /var/www/html</span><br><span class="line">tar -zxvf /usr/local/src/latest.tar.gz(wordpress-4.8.1.tar.gz/wordpress-4.8.1-zh_CN.tar.gz)</span><br></pre></td></tr></table></figure></p>
+<p>这样就把WordPress安装在网站子目录，而不是网站的根目录，方便网站的维护。这样文件内容就放在<code>/var/www/html/wordpress/</code>目录下，而不是<code>/var/www/html/</code>下。(建议这样做)</p>
+<p>在浏览器输入’服务器实例公网IP/wordpress’，如59.110.137.229/wordpress/，进入到 WordPress 的安装页面<br><img src="wordpress.png" alt="wordpress首页"><br>根据首页提示信息，进入数据库(通过Graphic或command)，创建一个名为wordpress的数据库名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE wordpress;</span><br><span class="line">SHOW DATABASES;</span><br><span class="line">EXIT;</span><br></pre></td></tr></table></figure></p>
+<p>然后开始，配置数据库信息，单击 提交。<br><img src="config.png" alt=""><br>数据库主机填localhost即可，我之前以为是填写服务器实例的公网IP，导致会出现下图错误。<br><img src="config-error.png" alt=""><br><img src="localhost.png" alt="phpMyAdmin显示主机"><br>如果出现下图错误，很有可能是文件权限不够。<br><img src="privilege.png" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cd /var/www/html</span><br><span class="line">$ ll -a    #查看解压后wordpress文件夹的权限</span><br><span class="line">drwxr-xr-x 5 nobody 65534 4096 Aug 30 23:24 wordpress    #权限不足</span><br><span class="line">$ chmod 777 -R wordpress    #权限</span><br><span class="line">$ chown root:root -R wordpress    #属组</span><br></pre></td></tr></table></figure></p>
+<p>修改权限，让文件可读可写可执行。</p>
+<p>最后进入欢迎页面，填写你的个人信息，site、username、password、Email等。</p>
+<h3 id="通过主域名访问安装在子目录的WP"><a href="#通过主域名访问安装在子目录的WP" class="headerlink" title="通过主域名访问安装在子目录的WP"></a>通过主域名访问安装在子目录的WP</h3><p>为了方便管理，把wordpress安装在子目录<code>/var/www/html/subdirectory</code>而不是网站根目录下<code>/var/www/html</code>，并且可以通过<code>domain.com</code>不是通过<code>domain.com/subdirectory</code>访问站点首页。首先确认你的WP内容是放在subdirectory目录下(e.g. wordpress文件夹)。</p>
+<ul>
+<li>Method I (Without URL change)。在根目录下创建<code>.htaccess</code>文件夹，并把以下内容放进去，仅修改<code>example.com</code>和<code>my_subdir</code>，替换成你自己的公网IP(如59.110.137.229)或域名(如guodongdong.com.cn)和子目录(如worpress)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;IfModule mod_rewrite.c&gt;</span><br><span class="line">RewriteEngine on</span><br><span class="line">RewriteCond %&#123;HTTP_HOST&#125; ^(www.)?example.com$</span><br><span class="line">RewriteCond %&#123;REQUEST_URI&#125; !^/my_subdir/</span><br><span class="line">RewriteCond %&#123;REQUEST_FILENAME&#125; !-f</span><br><span class="line">RewriteCond %&#123;REQUEST_FILENAME&#125; !-d</span><br><span class="line">RewriteRule ^(.*)$ /my_subdir/$1</span><br><span class="line">RewriteCond %&#123;HTTP_HOST&#125; ^(www.)?example.com$</span><br><span class="line">RewriteRule ^(/)?$ my_subdir/index.php [L] </span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>That’s all :) just so so</p>
+<ul>
+<li>Method II (With URL change)。</li>
+</ul>
+<ol>
+<li>进入<code>WP后台仪表盘Dashboard-设置Setting-常规General-</code>，<br>设置WordPress address (URL)为<code>http://IP address/wordpress</code>或<code>http://(www).domain.com/wordpress</code><br>设置Site address (URL)为<code>http://IP address</code>或<code>http://(www).domain.com</code><br>保存更改。</li>
+<li><p>把<code>index.php</code>和<code>.htaccess</code>两个文件从wordpress子目录复制(不要移动)到根目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp .htaccess index.php ..</span><br><span class="line">cd ..    #返回目录</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑index.php文件，<code>vim index.php</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">require( dirname( __FILE__ ) . &apos;/wordpress/wp-blog-header.php&apos; );    #添加子目录名称/wordpress</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果你设置了固定链接Permalinks，点击保存更改更新你的Permalink结构。WordPress会自动更新你的<code>.htaccess</code>文件。</p>
+</li>
+</ol>
+<p>最后通过你的公网IP或域名就可以直接访问博客主页了。<a href="https://codex.wordpress.org/Giving_WordPress_Its_Own_Directory" target="_blank" rel="noopener">WP官方配置链接</a>。如果还是不行，建议把方法一和二 一起走一遍就可以了。</p>
+<h3 id="安装FTP"><a href="#安装FTP" class="headerlink" title="安装FTP"></a>安装FTP</h3><p>通过WP在线安装主题或更新插件时，WP会通过FTP协议获取访问网页服务器的权限。<a href="http://gordon0518.github.io/2017/09/01/CentOS7%E5%AE%89%E8%A3%85%E6%90%AD%E5%BB%BAFTP%E6%9C%8D%E5%8A%A1%E5%99%A8/" target="_blank" rel="noopener">Entry</a></p>
+<h3 id="解决安装主题或更新插件时提示’未能找到WordPress内容目录（wp-content）’"><a href="#解决安装主题或更新插件时提示’未能找到WordPress内容目录（wp-content）’" class="headerlink" title="解决安装主题或更新插件时提示’未能找到WordPress内容目录（wp-content）’"></a>解决安装主题或更新插件时提示’未能找到WordPress内容目录（wp-content）’</h3><p>在wp-config配置文件中<strong>添加</strong>如下内容(以我的根目录为’wordpress’为例):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">define(&apos;FTP_BASE&apos;, &apos;wordpress&apos;);    #FTP_BASE：你的wordpress的安装的根目录</span><br><span class="line">define(&apos;FTP_CONTENT_DIR&apos;, &apos;wordpress/wp-content&apos;);    #FTP_CONTENT_DIR：你的wordpress的内容目录</span><br><span class="line">define(&apos;FTP_PLUGIN_DIR&apos;, &apos;wordpress/wp-content/plugins/&apos;);    #FTP_PLUGIN_DIR：你的wordpress的插件目录</span><br><span class="line">define(&apos;FTP_THEMES_DIR&apos;, &apos;wordpress/wp-content/themes/&apos;);    #FTP_THEMES_DIR：你的wordpress的主题目录</span><br><span class="line">define(&apos;FS_METHOD&apos;, &apos;direct&apos;);    #FS_METHOD：你的安装方法</span><br></pre></td></tr></table></figure></p>
+<p>保存修改，重新安装主题或更新插件，SUCCESS! <a href="http://blog.csdn.net/hyb745250618/article/details/77084497" target="_blank" rel="noopener">参考链接</a><br>去<a href="https://wordpress.org/" target="_blank" rel="noopener">WordPress官网</a>寻找自己喜欢的主题和合适的插件吧。</p>
+<h3 id="离线下载安装主题"><a href="#离线下载安装主题" class="headerlink" title="离线下载安装主题"></a>离线下载安装主题</h3><p>不喜欢在线的主题或在线不能下载主题，把下载的主题或插件放在/wordpress/wp-content/themes|plugins下，进入个人站点控制台启用即可。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="郭冬冬 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="郭冬冬 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vsftpd/" rel="tag"># vsftpd</a>
+          
+            <a href="/tags/Centos7/" rel="tag"># Centos7</a>
+          
+            <a href="/tags/LAMP/" rel="tag"># LAMP</a>
+          
+            <a href="/tags/WordPress/" rel="tag"># WordPress</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/27/域名与DNS/" rel="next" title="域名与DNS">
+                <i class="fa fa-chevron-left"></i> 域名与DNS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/01/CentOS7安装搭建FTP服务器/" rel="prev" title="CentOS7安装搭建FTP服务器">
+                CentOS7安装搭建FTP服务器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="郭冬冬" />
+            
+              <p class="site-author-name" itemprop="name">郭冬冬</p>
+              <p class="site-description motion-element" itemprop="description">技术总结和生活感想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/gordon0518" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guodongdong0518@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="gordon0518.github.io" target="_blank" title="Hexo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Hexo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.jianshu.com/u/0a500b9f1fe1" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本知识准备"><span class="nav-number">1.</span> <span class="nav-text">基本知识准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Apache"><span class="nav-number">2.</span> <span class="nav-text">安装Apache</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Exception异常处理"><span class="nav-number">2.1.</span> <span class="nav-text">Exception异常处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装MariaDB-MySQL的一个开源分支"><span class="nav-number">3.</span> <span class="nav-text">安装MariaDB (MySQL的一个开源分支)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装PHP以及PHP拓展"><span class="nav-number">4.</span> <span class="nav-text">安装PHP以及PHP拓展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装phpMyAdmin"><span class="nav-number">5.</span> <span class="nav-text">安装phpMyAdmin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装WordPress"><span class="nav-number">6.</span> <span class="nav-text">安装WordPress</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过主域名访问安装在子目录的WP"><span class="nav-number">6.1.</span> <span class="nav-text">通过主域名访问安装在子目录的WP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装FTP"><span class="nav-number">6.2.</span> <span class="nav-text">安装FTP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决安装主题或更新插件时提示’未能找到WordPress内容目录（wp-content）’"><span class="nav-number">6.3.</span> <span class="nav-text">解决安装主题或更新插件时提示’未能找到WordPress内容目录（wp-content）’</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#离线下载安装主题"><span class="nav-number">6.4.</span> <span class="nav-text">离线下载安装主题</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郭冬冬</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://gordon0518.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/';
+          this.page.identifier = '2017/08/29/CentOS7安装部署LAMP、WordPress和FTP/';
+          this.page.title = 'CentOS7安装部署LAMP、WordPress和FTP';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://gordon0518.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("E7BCmqy3B7tkhoIeockPTGU5-gzGzoHsz", "i20gUVUGAk8kUCt4N4hG7ghd");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

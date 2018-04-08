@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Network," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="加密数据的目的是防止发给对方的隐私信息被他人看到；发布签名的目的是向对方证明这段消息确实是你发的。 一、加密算法加密算法分为 对称密钥算法(Symmetric Key Algorithm) 和 公开密钥算法(Public Key Algorithm)。对称加密，是一种比较传统的加密方式，其加密运算、解密运算使用的是同样的密钥，信息的发送者和信息的接收者在进行信息的传输与处理时，必须共同持有该密码（">
+<meta name="keywords" content="Network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="加减密和数字签名">
+<meta property="og:url" content="http://yoursite.com/2018/01/21/加减密和数字签名/index.html">
+<meta property="og:site_name" content="Gordong">
+<meta property="og:description" content="加密数据的目的是防止发给对方的隐私信息被他人看到；发布签名的目的是向对方证明这段消息确实是你发的。 一、加密算法加密算法分为 对称密钥算法(Symmetric Key Algorithm) 和 公开密钥算法(Public Key Algorithm)。对称加密，是一种比较传统的加密方式，其加密运算、解密运算使用的是同样的密钥，信息的发送者和信息的接收者在进行信息的传输与处理时，必须共同持有该密码（">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/加减密和数字签名/process.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/加减密和数字签名/Certificate%20chain.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/加减密和数字签名/PGP.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/21/加减密和数字签名/SSL.png">
+<meta property="og:updated_time" content="2018-01-21T15:40:03.433Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="加减密和数字签名">
+<meta name="twitter:description" content="加密数据的目的是防止发给对方的隐私信息被他人看到；发布签名的目的是向对方证明这段消息确实是你发的。 一、加密算法加密算法分为 对称密钥算法(Symmetric Key Algorithm) 和 公开密钥算法(Public Key Algorithm)。对称加密，是一种比较传统的加密方式，其加密运算、解密运算使用的是同样的密钥，信息的发送者和信息的接收者在进行信息的传输与处理时，必须共同持有该密码（">
+<meta name="twitter:image" content="http://yoursite.com/2018/01/21/加减密和数字签名/process.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/21/加减密和数字签名/"/>
+
+
+
+
+
+  <title>加减密和数字签名 | Gordong</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?95ac7d2cf2ac052e787d934c29dac40e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gordong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">GuoDongDong's Personal Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/21/加减密和数字签名/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="郭冬冬">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gordong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">加减密和数字签名</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-21T23:32:35+08:00">
+                2018-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Network/" itemprop="url" rel="index">
+                    <span itemprop="name">Network</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/21/加减密和数字签名/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/21/加减密和数字签名/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/21/加减密和数字签名/" class="leancloud_visitors" data-flag-title="加减密和数字签名">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>加密数据的目的是防止发给对方的隐私信息被他人看到；发布签名的目的是向对方证明这段消息确实是你发的。</p>
+<h2 id="一、加密算法"><a href="#一、加密算法" class="headerlink" title="一、加密算法"></a>一、加密算法</h2><p>加密算法分为 <strong>对称密钥算法(Symmetric Key Algorithm)</strong> 和 <strong>公开密钥算法(Public Key Algorithm)</strong>。对称加密，是一种比较传统的加密方式，其加密运算、解密运算使用的是同样的密钥，信息的发送者和信息的接收者在进行信息的传输与处理时，必须共同持有该密码（称为对称密码）；公开密钥算法也称为 <em>非对称密钥算法</em> ，就是使用不同的加密密钥与解密密钥，是一种“由已知加密密钥推导出解密密钥在计算上是不可行的”密码体制。加密密钥（即公开密钥）PK是公开信息，而解密密钥（即秘密密钥）SK是需要保密的，加密算法E和解密算法D也都是公开的，虽然解密密钥SK是由公开密钥PK决定的，但却不能根据PK计算出SK。<br><a id="more"></a></p>
+<h3 id="1-1-DES-Data-Encryption-Standard-数据加密标准"><a href="#1-1-DES-Data-Encryption-Standard-数据加密标准" class="headerlink" title="1.1 DES(Data Encryption Standard, 数据加密标准)"></a>1.1 DES(Data Encryption Standard, 数据加密标准)</h3><p>DES是一种对称加密算法。<br>加密原理：DES 使用一个 56 位的密钥以及附加的 8 位奇偶校验位，产生最大 64 位的分组大小。这是一个迭代的分组密码，使用称为 Feistel 的技术，其中将加密的文本块分成两半。使用子密钥对其中一半应用循环功能，然后将输出与另一半进行“异或”运算；接着交换这两半，这一过程会继续下去，但最后一个循环不交换。DES 使用 16 个循环，使用异或，置换，代换，移位操作四种基本运算。<br><em>三重 DES</em>：使用 168 位的密钥对资料进行三次加密的一种机制。因DES的密钥长度太短，很容易被暴力破解，故利用三重加密来有效地增加密钥长度。<br>不过 ，DES 现在仅用于旧系统的鉴定，而更多地选择新的加密标准。</p>
+<h3 id="1-2-AES-Advanced-Encryption-Standard-高级加密标准"><a href="#1-2-AES-Advanced-Encryption-Standard-高级加密标准" class="headerlink" title="1.2 AES(Advanced Encryption Standard,  高级加密标准)"></a>1.2 AES(Advanced Encryption Standard,  高级加密标准)</h3><p>AES是一种对称加密算法。这个标准用来替代原先的DES，2006年AES已然成为对称密钥加密中最流行的算法之一。<br>加密原理：AES加密数据块分组长度必须为128比特，密钥长度可以是128比特、192比特、256比特中的任意一个（如果数据块及密钥长度不足时，会补齐）。AES加密有很多轮的重复和变换。大致步骤如下：1、密钥扩展（KeyExpansion），2、初始轮（Initial Round），3、重复轮（Rounds），每一轮又包括：SubBytes、ShiftRows、MixColumns、AddRoundKey，4、最终轮（Final Round），最终轮没有MixColumns。</p>
+<h3 id="1-3-RSA"><a href="#1-3-RSA" class="headerlink" title="1.3 RSA"></a>1.3 RSA</h3><p>RSA是一种公开密钥算法。由Ron Rivest、Adi Shamir、Leonard Adleman提出，故该算法取三个人名字的首字母来命名。它通常是先生成一对RSA 密钥，其中之一是保密密钥，由用户保存；另一个为公开密钥，可对外公开。<br>RSA算法基于一个十分简单的数论事实：将两个大质数相乘十分容易，但是想要对其乘积进行因式分解却极其困难，因此可以将乘积公开作为加密密钥。<br>具体解析：<a href="http://blog.csdn.net/dbs1215/article/details/48953589" target="_blank" rel="noopener">带你彻底理解RSA算法原理</a></p>
+<h3 id="1-4-加密算法选择"><a href="#1-4-加密算法选择" class="headerlink" title="1.4 加密算法选择"></a>1.4 加密算法选择</h3><p>因对称加密算法在传输数据时，也需要把双方共同的密钥明文传给对方，这里就会出现安全性地问题，故现在所有的通信都会使用公开密钥算法RSA。<br>但RSA有几个缺点：1.产生密钥很麻烦，受到素数产生技术的限制，因而难以做到一次一密；速度太慢，由于RSA 的分组长度太大，为保证安全性，n 至少也要 600 bits以上，使运算代价很高，尤其是速度较慢，较对称密码算法慢几个数量级；且随着大数分解技术的发展，这个长度还在增加，不利于数据格式的标准化。</p>
+<p>为了速度问题，人们广泛使用单，公钥密码结合使用的方法，优缺点互补：单钥密码加密速度快，人们用它来加密较长的文件，然后用RSA来给文件密钥加密，极好的解决了单钥密码的密钥分发问题。在对称密钥算法中应首选AES。</p>
+<h2 id="二、数字签名"><a href="#二、数字签名" class="headerlink" title="二、数字签名"></a>二、数字签名</h2><p>数字签名就是为了证明发布数据者的身份。签名流程是先 <em>认证</em>，再 <em>加密</em>。</p>
+<ol>
+<li>认证。以单向散列函数思想为基础，它接受一个任意长度的明文作为输入，然后计算出一个 <em>固定长度</em> 的位串，这个散列函数MD称为 <strong>消息摘要(Message Digest)</strong>。散列过程是不可逆的，即给定P很容易计算出MD(P)，但给定MD(P)，不能有效推算出P；并且输入明文中即使只有1位变化也会导致完全不同的输出。</li>
+<li>加密。加密的过程也就是签名的过程，为了安全，在实际的场景中，仍然使用公开加密算法RSA，为了证明发布者的身份，发布者就会用自己的私钥加密，接收方用发布者的公钥解密来确认。</li>
+</ol>
+<p>发布者对明文进行签名后，需要把明文和摘要都发给接收方，接收方只需对明文也hash计算出摘要，和接收到的摘要进行对比是否一致。</p>
+<p>问题1：理论上用RSA直接对明文签名就可以，为什么还要先对消息进行散列得到摘要再加密？<br><a href="https://crypto.stackexchange.com/questions/12768/why-hash-the-message-before-signing-it-with-rsa" target="_blank" rel="noopener">Why hash the message before signing it with RSA?</a><br>主要原因无非是 <strong>安全</strong> 和 <strong>快速</strong>。散列过程是不可逆的，故安全；散列完总是计算出一个固定的值，能加快RSA的加减密速度。</p>
+<p>问题2：RSA的公钥和私钥到底哪个才是用来加密和哪个用来解密？<br>RSA算法是第一个能同时用于加密和数字签名的算法。RSA的两个密钥是对称的，随便哪一个加密，可以用另一个解密，理论上你可以保留公钥，发布私钥，只不过公钥可以通过私钥轻松算出，反之不行，故实际中的做法是保留私钥发布私钥。<br>我们会发现实际中对数据加密时，使用的是接收方的公钥，而在数字签名时，使用的是发送者的私钥。<br><a href="https://www.zhihu.com/question/25912483" target="_blank" rel="noopener">RSA的公钥和私钥到底哪个才是用来加密和哪个用来解密？</a></p>
+<blockquote>
+<p>不要去硬记。<br>你只要想：既然是加密，那肯定是不希望别人知道我的消息，所以只有我才能解密，所以可得出 <strong>公钥负责加密，私钥负责解密</strong>；同理，既然是签名，那肯定是不希望有人冒充我发消息，只有我才能发布这个签名，所以可得出 <strong>私钥负责签名，公钥负责验证</strong>。</p>
+</blockquote>
+<h3 id="2-1-MD5-Message-Digest-Algorithm-5-信息-摘要算法5"><a href="#2-1-MD5-Message-Digest-Algorithm-5-信息-摘要算法5" class="headerlink" title="2.1 MD5(Message-Digest Algorithm 5, 信息-摘要算法5)"></a>2.1 MD5(Message-Digest Algorithm 5, 信息-摘要算法5)</h3><p>MD5以512位分组来处理输入的信息，且每一分组又被划分为16个32位子分组，经过了一系列的处理后，算法的输出由四个32位分组组成，将这四个32位分组级联后将生成一个128位散列值。<br>MD5码可以唯一地代表原信息的特征，通常用于密码的加密存储，数字签名，文件完整性验证等。</p>
+<h3 id="2-2-SHA-1-Secure-Hash-Algorithm-1-安全散列算法1"><a href="#2-2-SHA-1-Secure-Hash-Algorithm-1-安全散列算法1" class="headerlink" title="2.2 SHA-1(Secure Hash Algorithm 1, 安全散列算法1)"></a>2.2 SHA-1(Secure Hash Algorithm 1, 安全散列算法1)</h3><p> SHA-1 会从一个最大 2^64 位元的讯息中产生一串 160 位元的摘要。SHA-1基于MD5，MD5又基于MD4。<br> 论坛里提供的系统镜像文件的hash也就是微软官方提供的SHA-1值，下载后和此值对应，就说明你下载过程中文件没有被更改，属于原版。</p>
+<p><strong>比较：SHA-1摘要比MD5摘要长 32 比特，故SHA-1抗攻击能力更强，自然运行速度比MD5慢。需根据实际场景来选择</strong>。</p>
+<h2 id="三、编码转换"><a href="#三、编码转换" class="headerlink" title="三、编码转换"></a>三、编码转换</h2><p>在进行完加密和签名后的数据时二进制的，不适合用于传输，故需要转换为字符集。目前常见的编码算法就是 <strong>Base64</strong>。<br>Base64是网络上最常见的用于传输8Bit字节码的编码方式之一，Base64就是一种基于64个可打印字符来表示二进制数据的方法。Base64编码是从二进制到字符的过程，可用于在HTTP环境下传递较长的标识信息。</p>
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>目前大多数应用通信的安全流程是：</p>
+<p><img src="process.png" alt="process"></p>
+<p>上图是加密和签名的流程图，而解密和验签倒序进行。</p>
+<h2 id="五、公钥管理"><a href="#五、公钥管理" class="headerlink" title="五、公钥管理"></a>五、公钥管理</h2><p>为了安全地分发公钥(因为在传输的过程中可能被非法者替换)，就建立了能证明公钥所属权的 <strong>认证中心(CA, Certification Authority)</strong>。CA会给申请者颁发一个证书，用自己私钥对证书的SHA-1散列值进行签名。证书的作用就是将一个公钥与安全个体的名字绑定在一起。<br>实际上，CA并不是一个，为了安全和效率，而是分等级层次的，这样即使一个CA的数据库被攻破了，也不会影响全球的安全性。最顶级的CA即层次的根，它的责任是证明第二级的CA，顶级CA称为 <strong>区域管理机构(RA, Regional Authority)</strong></p>
+<p><img src="Certificate chain.png" alt="Certificate chain"></p>
+<p>当用户不相信对方直属CA颁发的证书时，就会请求上一级CA，以此类推，请求的证书就形成了一个 <strong>证书链(Certificate chain)</strong>。总之你必须相信根CA，证书链才有效，当然根CA并非只有一个，而是有多个根，每个根都有它直接的RA和CA。实际上，现代浏览器在安装的时候预先加载了100多个根的公钥。通过这种方式，就可以避免在全球范围内使用单一的可信权威机构。</p>
+<h2 id="六、常见安全通信协议"><a href="#六、常见安全通信协议" class="headerlink" title="六、常见安全通信协议"></a>六、常见安全通信协议</h2><h3 id="6-1-GPG-PGP"><a href="#6-1-GPG-PGP" class="headerlink" title="6.1 GPG/PGP"></a>6.1 GPG/PGP</h3><p><strong>PGP(Pretty Good Privacy, 良好的隐私性)</strong> 是一个完整的电子有点安全软件包，提供了私密性、认证、数字签名和压缩功能。它使用 <em>国际数据加密算法(IDEA, International Data Encryption Algorithm)</em> 的块密码算法来加密数据，PGP的密钥管理使用RSA，数据完整性使用MD5。<br>PGP使用已有的密码学算法，而不是发明新的算法。它像一个预处理器，接受明文输入，并产生签过名的密文作为输出，其输出格式为Base64。</p>
+<p><img src="PGP.png" alt="PGP"></p>
+<p>但是PGP是商业软件，不能自由使用。所以自由软件基金会决定，开发一个PGP的替代品，取名为GnuPG，即 <strong>GPG(The GNU Privacy Guard)</strong>。</p>
+<h3 id="6-2-SSH-Secure-Shell-安全外壳协议"><a href="#6-2-SSH-Secure-Shell-安全外壳协议" class="headerlink" title="6.2 SSH(Secure Shell, 安全外壳协议)"></a>6.2 SSH(Secure Shell, 安全外壳协议)</h3><p>SSH 为建立在应用层基础上的安全协议，它专为远程登录会话和其他网络服务提供安全性的协议。SSH最初是UNIX系统上的一个程序，后来又迅速扩展到其他操作平台。SSH采用面向连接的TCP协议传输，监听 <strong>22端口</strong>。<br>传统的网络服务程序，如：ftp、pop和telnet在本质上都是不安全的，因为它们在网络上用明文传送口令和数据，别有用心的人非常容易就可以截获这些口令和数据。而且，这些服务程序的安全验证方式也是有其弱点的， 就是很容易受到“中间人”（man-in-the-middle）这种方式的攻击。通过使用SSH，你可以把所有传输的数据进行加密，这样”中间人”这种攻击方式就不可能实现了，而且也能够防止DNS欺骗和IP欺骗。使用SSH，还有一个额外的好处就是传输的数据是经过压缩的，所以可以加快传输的速度。<br>从客户端来看，SSH提供两种级别的安全验证：</p>
+<ol>
+<li><strong>基于口令的安全验证</strong>：通过帐号和口令登录到远程主机，所有传输的数据都会被加密。但可能会有别的服务器在冒充真正的服务器，也就是受到“中间人”这种方式的攻击。</li>
+<li><strong>基于密匙的安全验证</strong>：需要创建一对密匙，并把公用密匙放在需要访问的服务器上，通过类似RSA的方式来加密和解密数据。它不仅加密所有传送的数据，而且“中间人”这种攻击方式也是不可能的（因为他没有你的私人密匙），但是整个登录的过程可能需要10秒。</li>
+</ol>
+<p>生活中应该首选SSH Keys，尽量避免使用密码方式登录SSH。</p>
+<h3 id="6-3-SSL-Secure-Sockets-Layer-安全套接层"><a href="#6-3-SSL-Secure-Sockets-Layer-安全套接层" class="headerlink" title="6.3 SSL(Secure Sockets Layer, 安全套接层)"></a>6.3 SSL(Secure Sockets Layer, 安全套接层)</h3><p>现在SSL的协议已广泛被Google、Firefox、Safari和IE等浏览器采用，主要用于页面信息的通信。SSL在两个套接字之间建立一个安全的连接，主要功能有浏览器和服务器的双向认证、数据加密和数据完整性保护等。<br>实际上，SSL位于应用层和传输层之间的一个新层，它接受来自浏览器的请求，再将请求传递给TCP以便传输到服务器上。一旦安全的连接已经被建立起来，则SSL的主要任务时处理压缩和加密。<br>在SSL上使用的HTTP被称为 <strong>安全的HTTP(HTTPS, Secure HTTP)</strong>，它使用一个新端口 <strong>443</strong>，而不是标准的端口80。现在许多企业都强烈推荐使用HTTPS协议，2017.01.01苹果要求所以的APP都必须使用HTTPS。</p>
+<p><img src="SSL.png" alt="SSL"></p>
+<p>SSL存在一个问题是，用户并不总是验证所用的密钥是否与证书相匹配，故产生了IETF标准haul后的 <strong>传输层安全(TLS, Transport Layer Security)</strong>。TLS是SSL的第3个版本，这就是所谓的 <em>SSL/TLS</em>。</p>
+<p>参考链接：《计算机网络（第5版）》 AndrewS．Tanenbaum<br><a href="http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html" target="_blank" rel="noopener">RSA算法原理（一）</a><br><a href="http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html" target="_blank" rel="noopener">RSA算法原理（二）</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="郭冬冬 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="郭冬冬 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Network/" rel="tag"># Network</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/21/网络协议-应用层-Application-Layer/" rel="next" title="网络协议-应用层(Application Layer)">
+                <i class="fa fa-chevron-left"></i> 网络协议-应用层(Application Layer)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/01/数据结构与算法分析/" rel="prev" title="数据结构与算法分析">
+                数据结构与算法分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="郭冬冬" />
+            
+              <p class="site-author-name" itemprop="name">郭冬冬</p>
+              <p class="site-description motion-element" itemprop="description">技术总结和生活感想</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/gordon0518" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:guodongdong0518@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="gordon0518.github.io" target="_blank" title="Hexo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Hexo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.jianshu.com/u/0a500b9f1fe1" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、加密算法"><span class="nav-number">1.</span> <span class="nav-text">一、加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-DES-Data-Encryption-Standard-数据加密标准"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 DES(Data Encryption Standard, 数据加密标准)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-AES-Advanced-Encryption-Standard-高级加密标准"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 AES(Advanced Encryption Standard,  高级加密标准)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-RSA"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 RSA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-加密算法选择"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 加密算法选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、数字签名"><span class="nav-number">2.</span> <span class="nav-text">二、数字签名</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-MD5-Message-Digest-Algorithm-5-信息-摘要算法5"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 MD5(Message-Digest Algorithm 5, 信息-摘要算法5)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-SHA-1-Secure-Hash-Algorithm-1-安全散列算法1"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 SHA-1(Secure Hash Algorithm 1, 安全散列算法1)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、编码转换"><span class="nav-number">3.</span> <span class="nav-text">三、编码转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、总结"><span class="nav-number">4.</span> <span class="nav-text">四、总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、公钥管理"><span class="nav-number">5.</span> <span class="nav-text">五、公钥管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、常见安全通信协议"><span class="nav-number">6.</span> <span class="nav-text">六、常见安全通信协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-GPG-PGP"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 GPG/PGP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-SSH-Secure-Shell-安全外壳协议"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 SSH(Secure Shell, 安全外壳协议)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-SSL-Secure-Sockets-Layer-安全套接层"><span class="nav-number">6.3.</span> <span class="nav-text">6.3 SSL(Secure Sockets Layer, 安全套接层)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郭冬冬</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://gordon0518.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/01/21/加减密和数字签名/';
+          this.page.identifier = '2018/01/21/加减密和数字签名/';
+          this.page.title = '加减密和数字签名';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://gordon0518.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("E7BCmqy3B7tkhoIeockPTGU5-gzGzoHsz", "i20gUVUGAk8kUCt4N4hG7ghd");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
